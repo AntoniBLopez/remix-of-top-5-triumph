@@ -105,6 +105,8 @@ const MatchingGame = ({ topicWords, onComplete }: Props) => {
         <button
           key={cell.id}
           onClick={() => handleSelect(cell)}
+          onMouseEnter={() => matchedPairs.has(cell.pairId) && setHoveredPair(cell.pairId)}
+          onMouseLeave={() => setHoveredPair(null)}
           disabled={matchedPairs.has(cell.pairId)}
           className={`w-full rounded-xl border-2 px-3 py-2.5 text-xs font-semibold transition-all duration-200 md:px-4 md:py-3.5 md:text-sm ${getCellStyle(cell)}`}
         >
