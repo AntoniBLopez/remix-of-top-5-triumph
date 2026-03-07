@@ -31,6 +31,7 @@ const MatchingGame = ({ topicWords, onComplete }: Props) => {
   const [selected, setSelected] = useState<Cell | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<Set<number>>(new Set());
   const [wrongPair, setWrongPair] = useState<[string, string] | null>(null);
+  const [hoveredPair, setHoveredPair] = useState<number | null>(null);
   const [knownWords, setKnownWords] = useState<string[]>([]);
   const [learningWords, setLearningWords] = useState<string[]>([]);
   const [errorCounts, setErrorCounts] = useState<Record<number, number>>({});
@@ -90,6 +91,7 @@ const MatchingGame = ({ topicWords, onComplete }: Props) => {
   const progress = (totalMatched / topicWords.length) * 100;
 
   const getCellStyle = (cell: Cell) => {
+    if (matchedPairs.has(cell.pairId) && hoveredPair === cell.pairId) return "border-primary bg-primary/25 text-primary scale-[1.02] shadow-md ring-2 ring-primary/30";
     if (matchedPairs.has(cell.pairId)) return "border-primary/30 bg-primary/10 text-primary opacity-60 scale-95";
     if (wrongPair && (wrongPair[0] === cell.id || wrongPair[1] === cell.id)) return "border-destructive bg-destructive/10 text-destructive animate-shake";
     if (selected?.id === cell.id) return "border-primary bg-primary/10 text-primary ring-2 ring-primary/20 scale-[1.02]";
@@ -103,6 +105,8 @@ const MatchingGame = ({ topicWords, onComplete }: Props) => {
         <button
           key={cell.id}
           onClick={() => handleSelect(cell)}
+          onMouseEnter={() => matchedPairs.has(cell.pairId) && setHoveredPair(cell.pairId)}
+          onMouseLeave={() => setHoveredPair(null)}
           disabled={matchedPairs.has(cell.pairId)}
           className={`w-full rounded-xl border-2 px-3 py-2.5 text-xs font-semibold transition-all duration-200 md:px-4 md:py-3.5 md:text-sm ${getCellStyle(cell)}`}
         >
