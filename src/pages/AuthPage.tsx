@@ -17,7 +17,7 @@ const AuthPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: integrate with auth backend
-    navigate("/");
+    navigate("/home");
   };
 
   return (
