@@ -104,10 +104,9 @@ const MatchingGame = ({ topicWords, onComplete }: Props) => {
       {cells.filter(c => c.lang === lang).map((cell) => (
         <button
           key={cell.id}
-          onClick={() => handleSelect(cell)}
+          onClick={() => !matchedPairs.has(cell.pairId) && handleSelect(cell)}
           onMouseEnter={() => matchedPairs.has(cell.pairId) && setHoveredPair(cell.pairId)}
           onMouseLeave={() => setHoveredPair(null)}
-          disabled={matchedPairs.has(cell.pairId)}
           className={`w-full rounded-xl border-2 px-3 py-2.5 text-xs font-semibold transition-all duration-200 md:px-4 md:py-3.5 md:text-sm ${getCellStyle(cell)}`}
         >
           <div className="flex items-center justify-between">
