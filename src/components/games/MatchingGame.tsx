@@ -130,16 +130,16 @@ const MatchingGame = ({ topicWords, onComplete }: Props) => {
           <span>Grupo {pageIndex + 1}/{totalPages}</span>
           <span>{totalMatched}/{topicWords.length} parejas</span>
         </div>
+        <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+          <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${progress}%` }} />
+        </div>
 
         {/* Score Display */}
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-full bg-destructive/20 border-2 border-destructive/40 flex items-center justify-center shrink-0">
+        <div className="flex justify-between">
+          <div className="w-7 h-7 rounded-full bg-destructive/20 border-2 border-destructive/40 flex items-center justify-center">
             <span className="text-xs font-bold text-destructive">{learningWords.length}</span>
           </div>
-          <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-            <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${progress}%` }} />
-          </div>
-          <div className="w-7 h-7 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center shrink-0">
+          <div className="w-7 h-7 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center">
             <span className="text-xs font-bold text-primary">{knownWords.length}</span>
           </div>
         </div>
