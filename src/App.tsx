@@ -27,6 +27,7 @@ const App = () => (
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
             <Route path="/ranking" element={<RankingPage />} />
             <Route path="/games/:mode" element={<GamesPage />} />
             <Route path="*" element={<NotFound />} />

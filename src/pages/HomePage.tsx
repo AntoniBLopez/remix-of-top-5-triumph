@@ -85,6 +85,8 @@ const HomePage = () => {
           ))}
         </div>
       </div>
+
+      <BottomNav />
     </div>
   );
 };
