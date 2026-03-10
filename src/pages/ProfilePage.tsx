@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sun, Moon, Camera, Trash2, Pencil, Eye, EyeOff, Mail, Lock, User, LogOut, ChevronRight } from "lucide-react";
+import BottomNav from "@/components/BottomNav";
 import { useTheme } from "@/components/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,7 +80,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-background">
+    <div className="min-h-[100dvh] bg-background pb-20">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="mx-auto flex max-w-lg items-center justify-between px-4 py-3">
@@ -306,6 +307,7 @@ const ProfilePage = () => {
           </div>
         </DialogContent>
       </Dialog>
+      <BottomNav />
     </div>
   );
 };
