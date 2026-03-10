@@ -1,9 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Gamepad2, UserCircle, Settings } from "lucide-react";
+import { Gamepad2, UserCircle, Settings, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { id: "play", label: "Jugar", icon: Gamepad2, path: "/home" },
+  { id: "conjugations", label: "Verbos", icon: BookOpen, path: "/conjugations" },
   { id: "profile", label: "Perfil", icon: UserCircle, path: "/profile" },
   { id: "settings", label: "Ajustes", icon: Settings, path: "/settings" },
 ] as const;
