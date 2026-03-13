@@ -4,6 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CONJUGATION_BY_TENSE } from "@/data/mockConjugations";
 import { WordsArray } from "@/types/game";
 import BottomNav from "@/components/BottomNav";
+import ConjugationSettings, {
+  ConjugationFilters,
+  DEFAULT_FILTERS,
+} from "@/components/conjugations/ConjugationSettings";
 
 interface VerbData {
   verb: string;
