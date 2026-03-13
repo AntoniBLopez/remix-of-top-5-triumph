@@ -127,9 +127,11 @@ const VerbListView = ({
 const VerbDetailView = ({
   verbData,
   onBack,
+  filters,
 }: {
   verbData: VerbData;
   onBack: () => void;
+  filters: ConjugationFilters;
 }) => {
   const [collapsedTenses, setCollapsedTenses] = useState<Set<string>>(new Set());
 
@@ -141,6 +143,19 @@ const VerbDetailView = ({
       return next;
     });
   };
+
+  // Filter tenses and pronouns based on settings
+  const filteredTenses = useMemo(() => {
+    const result: Record<string, { pronoun: string; form: string }[]> = {};
+    for (const [tense, forms] of Object.entries(verbData.tenses)) {
+      if (!(filters.tenses[tense] ?? true)) continue;
+      const filteredForms = forms.filter(
+        ({ pronoun }) => filters.pronouns[pronoun] ?? true
+      );
+      if (filteredForms.length > 0) result[tense] = filteredForms;
+    }
+    return result;
+  }, [verbData, filters]);
 
   return (
     <motion.div
@@ -164,11 +179,15 @@ const VerbDetailView = ({
 
       {/* Tense sections */}
       <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 space-y-1">
-        {Object.entries(verbData.tenses).map(([tense, forms]) => {
+        {Object.keys(filteredTenses).length === 0 && (
+          <div className="px-1 py-8 text-center text-sm text-muted-foreground">
+            No hay conjugaciones con los filtros actuales
+          </div>
+        )}
+        {Object.entries(filteredTenses).map(([tense, forms]) => {
           const isCollapsed = collapsedTenses.has(tense);
           return (
             <div key={tense}>
-              {/* Tense header */}
               <button
                 onClick={() => toggleTense(tense)}
                 className="flex w-full items-center justify-between py-4"
@@ -180,8 +199,6 @@ const VerbDetailView = ({
                   className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${isCollapsed ? "" : "rotate-180"}`}
                 />
               </button>
-
-              {/* Conjugation rows */}
               <AnimatePresence initial={false}>
                 {!isCollapsed && (
                   <motion.div
@@ -210,8 +227,6 @@ const VerbDetailView = ({
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              {/* Separator line after section */}
               <div className="border-b border-border" />
             </div>
           );
