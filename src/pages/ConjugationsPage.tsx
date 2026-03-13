@@ -239,13 +239,16 @@ const VerbDetailView = ({
 const ConjugationsPage = () => {
   const verbs = useMemo(parseConjugations, []);
   const [selectedVerb, setSelectedVerb] = useState<VerbData | null>(null);
+  const [filters, setFilters] = useState<ConjugationFilters>(DEFAULT_FILTERS);
 
   return (
     <div className="min-h-[100dvh] bg-background pb-20">
       {/* Top header */}
       <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-2xl items-center justify-center px-4 py-3">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
+          <div className="w-9" />
           <h1 className="text-base font-bold text-foreground">Conjugaciones</h1>
+          <ConjugationSettings filters={filters} onChange={setFilters} />
         </div>
       </header>
 
@@ -256,6 +259,7 @@ const ConjugationsPage = () => {
               key={selectedVerb.verb}
               verbData={selectedVerb}
               onBack={() => setSelectedVerb(null)}
+              filters={filters}
             />
           ) : (
             <motion.div
