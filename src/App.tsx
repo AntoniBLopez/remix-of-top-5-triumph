@@ -12,6 +12,7 @@ import GamesPage from "./pages/GamesPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import ConjugationsPage from "./pages/ConjugationsPage";
+import SmartReviewPage from "./pages/SmartReviewPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
