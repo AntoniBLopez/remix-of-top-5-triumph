@@ -32,11 +32,13 @@ import {
   getTenseProgress,
   getWeakSpots,
   initializeCards,
+  getOnboardingData,
   type FSRSStats,
   type TenseProgress as TenseProgressType,
   type WeakSpot,
 } from "@/lib/fsrs";
 import { MOCK_SENTENCES, generateTableClozeCards } from "@/data/mockSentences";
+import DailyStreakPopup from "@/components/DailyStreakPopup";
 
 const TENSE_COLORS: Record<string, { emoji: string; color: string }> = {
   "Präsens": { emoji: "🔵", color: "from-blue-500 to-cyan-400" },
@@ -84,6 +86,9 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
   const stats = useMemo(() => getStats(), []);
   const tenseProgress = useMemo(() => getTenseProgress(), []);
   const weakSpots = useMemo(() => getWeakSpots(), []);
+  const onboarding = useMemo(() => getOnboardingData(), []);
+  const dailyGoal = onboarding?.dailyGoal || 20;
+  const dailyProgress = Math.min(Math.round((stats.totalReviewed / dailyGoal) * 100), 100);
 
   return (
     <div className="space-y-6 px-4 pb-8 pt-6">
@@ -157,6 +162,37 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
           <p className="text-xl font-extrabold text-foreground">{stats.totalReviewed}</p>
           <p className="text-[10px] font-medium text-muted-foreground">Revisadas</p>
         </div>
+      </motion.div>
+
+      {/* Daily Goal Progress */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
+        className="rounded-2xl border border-border bg-card p-4"
+      >
+        <div className="mb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Target className="h-4 w-4 text-primary" />
+            <span className="text-sm font-bold text-foreground">Objetivo diario</span>
+          </div>
+          <span className="text-xs font-bold text-muted-foreground">
+            {stats.totalReviewed}/{dailyGoal}
+          </span>
+        </div>
+        <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${dailyProgress}%` }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className={`h-full rounded-full ${dailyProgress >= 100 ? "bg-emerald-500" : "bg-primary"}`}
+          />
+        </div>
+        {dailyProgress >= 100 && (
+          <p className="mt-2 text-center text-xs font-bold text-emerald-600 dark:text-emerald-400">
+            🎉 ¡Objetivo cumplido!
+          </p>
+        )}
       </motion.div>
 
       {/* Tense Progress */}
@@ -490,9 +526,28 @@ const ConjugationsPage = () => {
   const [view, setView] = useState<PageView>("dashboard");
   const [selectedVerb, setSelectedVerb] = useState<VerbData | null>(null);
   const [filters, setFilters] = useState<ConjugationFilters>(DEFAULT_FILTERS);
+  const [showStreak, setShowStreak] = useState(false);
+  const streakStats = useMemo(() => getStats(), []);
+
+  // Redirect to onboarding if not completed
+  useEffect(() => {
+    const onboarding = getOnboardingData();
+    if (!onboarding) {
+      navigate("/conjugations/onboarding", { replace: true });
+      return;
+    }
+    // Show streak popup once per session
+    if (streakStats.streak > 0 && !sessionStorage.getItem("streak_shown_conj")) {
+      sessionStorage.setItem("streak_shown_conj", "1");
+      setShowStreak(true);
+    }
+  }, [navigate, streakStats.streak]);
 
   // Initialize FSRS cards on mount
   useEffect(() => {
+    const onboarding = getOnboardingData();
+    if (!onboarding) return;
+
     const sentenceCards = MOCK_SENTENCES.map((s, i) => ({
       id: `sent:${s.verb}:${s.tense}:${s.pronoun}:${i}`,
       verb: s.verb,
@@ -604,6 +659,11 @@ const ConjugationsPage = () => {
       </div>
 
       <BottomNav />
+      <DailyStreakPopup
+        streakDays={streakStats.streak}
+        open={showStreak}
+        onClose={() => setShowStreak(false)}
+      />
     </div>
   );
 };
