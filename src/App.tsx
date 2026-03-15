@@ -12,6 +12,7 @@ import GamesPage from "./pages/GamesPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import ConjugationsPage from "./pages/ConjugationsPage";
+import SmartReviewPage from "./pages/SmartReviewPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/conjugations" element={<ConjugationsPage />} />
+            <Route path="/conjugations/review" element={<SmartReviewPage />} />
             <Route path="/ranking" element={<RankingPage />} />
             <Route path="/games/:mode" element={<GamesPage />} />
             <Route path="*" element={<NotFound />} />
