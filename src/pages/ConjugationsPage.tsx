@@ -86,6 +86,9 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
   const stats = useMemo(() => getStats(), []);
   const tenseProgress = useMemo(() => getTenseProgress(), []);
   const weakSpots = useMemo(() => getWeakSpots(), []);
+  const onboarding = useMemo(() => getOnboardingData(), []);
+  const dailyGoal = onboarding?.dailyGoal || 20;
+  const dailyProgress = Math.min(Math.round((stats.totalReviewed / dailyGoal) * 100), 100);
 
   return (
     <div className="space-y-6 px-4 pb-8 pt-6">
