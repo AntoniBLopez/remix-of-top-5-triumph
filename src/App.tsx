@@ -14,6 +14,7 @@ import SettingsPage from "./pages/SettingsPage";
 import ConjugationsPage from "./pages/ConjugationsPage";
 import SmartReviewPage from "./pages/SmartReviewPage";
 import OnboardingPage from "./pages/OnboardingPage";
+import AchievementsPage from "./pages/AchievementsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
