@@ -659,6 +659,11 @@ const ConjugationsPage = () => {
       </div>
 
       <BottomNav />
+      <DailyStreakPopup
+        streakDays={streakStats.streak}
+        open={showStreak}
+        onClose={() => setShowStreak(false)}
+      />
     </div>
   );
 };
