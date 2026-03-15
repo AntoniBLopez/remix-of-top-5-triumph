@@ -16,6 +16,7 @@ import {
   Trophy,
   ChevronRight,
   Settings2,
+  BarChart3,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CONJUGATION_BY_TENSE } from "@/data/mockConjugations";
