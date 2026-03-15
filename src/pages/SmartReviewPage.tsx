@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { X, Volume2, Check, AlertCircle, Zap, Brain, Target, RotateCcw } from "lucide-react";
+import { getStats } from "@/lib/fsrs";
+import { updateContextFromStats, checkAchievements, recordPerfectSession, recordSession, type Achievement } from "@/lib/achievements";
+import AchievementUnlockPopup from "@/components/AchievementUnlockPopup";
 import { motion, AnimatePresence } from "framer-motion";
 import { MOCK_SENTENCES, generateTableClozeCards, type SentenceCloze, type TableClozeCard } from "@/data/mockSentences";
 import { Progress } from "@/components/ui/progress";
@@ -382,6 +385,20 @@ const SmartReviewPage = () => {
     resetCardState();
   }, [resetCardState]);
 
+  // Achievement check on session done
+  const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
+
+  useEffect(() => {
+    if (!sessionDone) return;
+    const stats = getStats();
+    const ctx = updateContextFromStats(stats);
+    const accuracy = queue.length > 0 ? Math.round((correctCount / queue.length) * 100) : 0;
+    if (accuracy === 100 && queue.length > 0) recordPerfectSession();
+    else recordSession();
+    const unlocked = checkAchievements(ctx);
+    if (unlocked.length > 0) setNewAchievements(unlocked);
+  }, [sessionDone, correctCount, queue.length]);
+
   // No due cards
   if (queue.length === 0 && !sessionDone) {
     return (
@@ -399,9 +416,16 @@ const SmartReviewPage = () => {
     );
   }
 
+
   if (sessionDone) {
     return (
       <div className="min-h-[100dvh] bg-background">
+        {newAchievements.length > 0 && (
+          <AchievementUnlockPopup
+            achievements={newAchievements}
+            onClose={() => setNewAchievements([])}
+          />
+        )}
         <SessionSummary totalCards={queue.length} correctCount={correctCount} ratings={ratings}
           onRestart={handleRestart} onGoHome={() => navigate("/conjugations")} />
       </div>
