@@ -168,14 +168,15 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="space-y-3">
-          {TENSE_PROGRESS.map((tense) => {
-            const pct = Math.round((tense.mastered / tense.total) * 100);
+          {tenseProgress.map((tense) => {
+            const pct = tense.total > 0 ? Math.round((tense.mastered / tense.total) * 100) : 0;
+            const colors = TENSE_COLORS[tense.tense] || { emoji: "📘", color: "from-primary to-primary/70" };
             return (
-              <div key={tense.id} className="rounded-2xl border border-border bg-card p-4">
+              <div key={tense.tense} className="rounded-2xl border border-border bg-card p-4">
                 <div className="mb-2 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">{tense.emoji}</span>
-                    <span className="text-sm font-bold text-foreground">{tense.label}</span>
+                    <span className="text-lg">{colors.emoji}</span>
+                    <span className="text-sm font-bold text-foreground">{tense.tense}</span>
                   </div>
                   <span className="text-xs font-bold text-muted-foreground">
                     {tense.mastered}/{tense.total}
@@ -186,7 +187,7 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
                     initial={{ width: 0 }}
                     animate={{ width: `${pct}%` }}
                     transition={{ duration: 0.8, delay: 0.3 }}
-                    className={`h-full rounded-full bg-gradient-to-r ${tense.color}`}
+                    className={`h-full rounded-full bg-gradient-to-r ${colors.color}`}
                   />
                 </div>
               </div>
