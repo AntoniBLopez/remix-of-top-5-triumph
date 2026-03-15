@@ -26,6 +26,16 @@ import ConjugationSettings, {
   DEFAULT_FILTERS,
 } from "@/components/conjugations/ConjugationSettings";
 import { Progress } from "@/components/ui/progress";
+import {
+  getStats,
+  getTenseProgress,
+  getWeakSpots,
+  initializeCards,
+  type FSRSStats,
+  type TenseProgress as TenseProgressType,
+  type WeakSpot,
+} from "@/lib/fsrs";
+import { MOCK_SENTENCES, generateTableClozeCards } from "@/data/mockSentences";
 
 // ── Mock FSRS-like stats (will be replaced with real data later) ──
 const MOCK_STATS = {
