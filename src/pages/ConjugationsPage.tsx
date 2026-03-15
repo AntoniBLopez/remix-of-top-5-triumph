@@ -207,7 +207,7 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
           <Trophy className="h-4 w-4 text-accent" />
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-          {WEAK_SPOTS.map((spot, i) => (
+          {weakSpots.length > 0 ? weakSpots.map((spot, i) => (
             <div
               key={i}
               className="flex min-w-[140px] flex-col gap-2 rounded-2xl border border-destructive/20 bg-destructive/5 p-4"
@@ -226,7 +226,9 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
                 <span className="text-[10px] font-bold text-destructive">{spot.accuracy}%</span>
               </div>
             </div>
-          ))}
+          )) : (
+            <p className="text-xs text-muted-foreground py-4">Completa algunas sesiones para ver tus puntos débiles</p>
+          )}
         </div>
       </motion.div>
 
