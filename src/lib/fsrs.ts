@@ -63,10 +63,38 @@ const STORAGE_KEY = "fsrs_cards";
 const LOG_KEY = "fsrs_logs";
 const STREAK_KEY = "fsrs_streak";
 const XP_KEY = "fsrs_xp";
+const ONBOARDING_KEY = "onboarding";
 
 const DESIRED_RETENTION = 0.9;
 const INITIAL_STABILITY = 0.5;
 const INITIAL_DIFFICULTY = 5;
+
+// ── Onboarding Data ──
+export interface OnboardingData {
+  dailyGoal: number;
+  dailyMinutes: number;
+  level: "beginner" | "intermediate" | "advanced";
+  completedAt: string;
+}
+
+export function getOnboardingData(): OnboardingData | null {
+  try {
+    const data = localStorage.getItem(ONBOARDING_KEY);
+    return data ? JSON.parse(data) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function getLevelDifficulty(level: "beginner" | "intermediate" | "advanced"): number {
+  const map = { beginner: 7, intermediate: 5, advanced: 3 };
+  return map[level];
+}
+
+export function getLevelStability(level: "beginner" | "intermediate" | "advanced"): number {
+  const map = { beginner: 0.3, intermediate: 0.5, advanced: 1.0 };
+  return map[level];
+}
 
 // ── FSRS Math ──
 function clamp(val: number, min: number, max: number) {

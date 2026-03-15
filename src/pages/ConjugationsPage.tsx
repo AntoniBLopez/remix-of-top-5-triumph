@@ -32,11 +32,13 @@ import {
   getTenseProgress,
   getWeakSpots,
   initializeCards,
+  getOnboardingData,
   type FSRSStats,
   type TenseProgress as TenseProgressType,
   type WeakSpot,
 } from "@/lib/fsrs";
 import { MOCK_SENTENCES, generateTableClozeCards } from "@/data/mockSentences";
+import DailyStreakPopup from "@/components/DailyStreakPopup";
 
 const TENSE_COLORS: Record<string, { emoji: string; color: string }> = {
   "Präsens": { emoji: "🔵", color: "from-blue-500 to-cyan-400" },
