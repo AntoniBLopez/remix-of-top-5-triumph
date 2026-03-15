@@ -1,5 +1,22 @@
 import { useState, useMemo } from "react";
-import { ChevronDown, ChevronLeft, Search, Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import {
+  ChevronDown,
+  ChevronLeft,
+  Search,
+  Lock,
+  Flame,
+  Zap,
+  Brain,
+  TrendingUp,
+  BookOpen,
+  Play,
+  Target,
+  Clock,
+  Trophy,
+  ChevronRight,
+  Settings2,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CONJUGATION_BY_TENSE } from "@/data/mockConjugations";
 import { WordsArray } from "@/types/game";
@@ -8,7 +25,33 @@ import ConjugationSettings, {
   ConjugationFilters,
   DEFAULT_FILTERS,
 } from "@/components/conjugations/ConjugationSettings";
+import { Progress } from "@/components/ui/progress";
 
+// ── Mock FSRS-like stats (will be replaced with real data later) ──
+const MOCK_STATS = {
+  streak: 7,
+  dueToday: 12,
+  totalReviewed: 156,
+  retentionRate: 87,
+  xpToday: 45,
+  masteredVerbs: 3,
+  totalVerbs: 10,
+};
+
+const TENSE_PROGRESS = [
+  { id: "prasens", label: "Präsens", emoji: "🔵", mastered: 18, total: 27, color: "from-blue-500 to-cyan-400" },
+  { id: "prateritum", label: "Präteritum", emoji: "🟠", mastered: 10, total: 27, color: "from-orange-500 to-amber-400" },
+  { id: "perfekt", label: "Perfekt", emoji: "🟢", mastered: 6, total: 20, color: "from-emerald-500 to-green-400" },
+];
+
+const WEAK_SPOTS = [
+  { verb: "sprechen", tense: "Präteritum", pronoun: "du", accuracy: 40 },
+  { verb: "fahren", tense: "Präsens", pronoun: "er/sie", accuracy: 50 },
+  { verb: "lesen", tense: "Perfekt", pronoun: "ich", accuracy: 55 },
+  { verb: "sehen", tense: "Präteritum", pronoun: "ich", accuracy: 60 },
+];
+
+// ── Types ──
 interface VerbData {
   verb: string;
   tenses: Record<string, { pronoun: string; form: string }[]>;
@@ -42,7 +85,180 @@ function parseConjugations(): VerbData[] {
   return Array.from(verbMap.entries()).map(([verb, tenses]) => ({ verb, tenses }));
 }
 
-// Verb list view
+// ── Dashboard View ──
+const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => void; onOpenLibrary: () => void }) => {
+  const stats = MOCK_STATS;
+
+  return (
+    <div className="space-y-6 px-4 pb-8 pt-6">
+      {/* Hero card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/70 p-6 text-primary-foreground"
+      >
+        {/* Decorative circles */}
+        <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-white/10" />
+        <div className="absolute -bottom-4 -left-4 h-24 w-24 rounded-full bg-white/5" />
+
+        <div className="relative z-10">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                <Flame className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-2xl font-extrabold">{stats.streak}</p>
+                <p className="text-xs font-medium text-white/70">días de racha</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 rounded-full bg-white/20 px-3 py-1.5 backdrop-blur-sm">
+              <Zap className="h-3.5 w-3.5" />
+              <span className="text-xs font-bold">{stats.xpToday} XP hoy</span>
+            </div>
+          </div>
+
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+              <span className="text-3xl">📋</span>
+            </div>
+            <div>
+              <p className="text-3xl font-extrabold">{stats.dueToday}</p>
+              <p className="text-sm font-medium text-white/80">conjugaciones pendientes</p>
+            </div>
+          </div>
+
+          <button
+            onClick={onStartReview}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white py-4 text-base font-extrabold text-primary shadow-lg transition-all hover:shadow-xl active:scale-[0.98]"
+          >
+            <Play className="h-5 w-5" />
+            Iniciar Smart Review
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Quick Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="grid grid-cols-3 gap-3"
+      >
+        <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
+          <Target className="h-5 w-5 text-primary" />
+          <p className="text-xl font-extrabold text-foreground">{stats.retentionRate}%</p>
+          <p className="text-[10px] font-medium text-muted-foreground">Retención</p>
+        </div>
+        <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
+          <Brain className="h-5 w-5 text-primary" />
+          <p className="text-xl font-extrabold text-foreground">{stats.masteredVerbs}</p>
+          <p className="text-[10px] font-medium text-muted-foreground">Dominados</p>
+        </div>
+        <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
+          <Clock className="h-5 w-5 text-primary" />
+          <p className="text-xl font-extrabold text-foreground">{stats.totalReviewed}</p>
+          <p className="text-[10px] font-medium text-muted-foreground">Revisadas</p>
+        </div>
+      </motion.div>
+
+      {/* Tense Progress */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-extrabold text-foreground">Progreso por tiempo verbal</h2>
+          <TrendingUp className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div className="space-y-3">
+          {TENSE_PROGRESS.map((tense) => {
+            const pct = Math.round((tense.mastered / tense.total) * 100);
+            return (
+              <div key={tense.id} className="rounded-2xl border border-border bg-card p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{tense.emoji}</span>
+                    <span className="text-sm font-bold text-foreground">{tense.label}</span>
+                  </div>
+                  <span className="text-xs font-bold text-muted-foreground">
+                    {tense.mastered}/{tense.total}
+                  </span>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${pct}%` }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className={`h-full rounded-full bg-gradient-to-r ${tense.color}`}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Weak Spots Carousel */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-extrabold text-foreground">Puntos débiles</h2>
+          <Trophy className="h-4 w-4 text-accent" />
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+          {WEAK_SPOTS.map((spot, i) => (
+            <div
+              key={i}
+              className="flex min-w-[140px] flex-col gap-2 rounded-2xl border border-destructive/20 bg-destructive/5 p-4"
+            >
+              <p className="text-sm font-extrabold text-foreground">{spot.verb}</p>
+              <p className="text-[10px] font-medium text-muted-foreground">
+                {spot.pronoun} · {spot.tense}
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                  <div
+                    className="h-full rounded-full bg-destructive"
+                    style={{ width: `${spot.accuracy}%` }}
+                  />
+                </div>
+                <span className="text-[10px] font-bold text-destructive">{spot.accuracy}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Verb Library CTA */}
+      <motion.button
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.4 }}
+        onClick={onOpenLibrary}
+        className="flex w-full items-center justify-between rounded-2xl border border-border bg-card p-5 transition-colors hover:bg-muted/40 active:bg-muted/60"
+      >
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+            <BookOpen className="h-5 w-5 text-primary" />
+          </div>
+          <div className="text-left">
+            <p className="text-sm font-bold text-foreground">Biblioteca de verbos</p>
+            <p className="text-xs text-muted-foreground">Consulta todas las conjugaciones</p>
+          </div>
+        </div>
+        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+      </motion.button>
+    </div>
+  );
+};
+
+// ── Verb List View ──
 const FREE_VERB_COUNT = 5;
 
 const VerbListView = ({
@@ -59,7 +275,6 @@ const VerbListView = ({
 
   return (
     <>
-      {/* Search */}
       <div className="px-4 pt-4 pb-2">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -73,7 +288,6 @@ const VerbListView = ({
         </div>
       </div>
 
-      {/* Verb list */}
       <div className="px-4 pt-2 pb-4">
         <div className="divide-y divide-border rounded-2xl border border-border bg-card overflow-hidden">
           {filtered.map((verbData, i) => {
@@ -106,7 +320,6 @@ const VerbListView = ({
               </motion.button>
             );
           })}
-
         </div>
 
         {filtered.length === 0 && (
@@ -119,7 +332,7 @@ const VerbListView = ({
   );
 };
 
-// Verb detail view (inspired by reference images)
+// ── Verb Detail View ──
 const VerbDetailView = ({
   verbData,
   onBack,
@@ -140,7 +353,6 @@ const VerbDetailView = ({
     });
   };
 
-  // Filter tenses and pronouns based on settings
   const filteredTenses = useMemo(() => {
     const result: Record<string, { pronoun: string; form: string }[]> = {};
     for (const [tense, forms] of Object.entries(verbData.tenses)) {
@@ -160,7 +372,6 @@ const VerbDetailView = ({
       exit={{ opacity: 0, x: -40 }}
       transition={{ duration: 0.25 }}
     >
-      {/* Verb header */}
       <div className="sticky top-[53px] z-10 border-b border-border bg-background/90 backdrop-blur-lg">
         <div className="mx-auto max-w-2xl flex items-center gap-3 px-4 py-3">
           <button
@@ -173,7 +384,6 @@ const VerbDetailView = ({
         </div>
       </div>
 
-      {/* Tense sections */}
       <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 space-y-1">
         {Object.keys(filteredTenses).length === 0 && (
           <div className="px-1 py-8 text-center text-sm text-muted-foreground">
@@ -232,41 +442,108 @@ const VerbDetailView = ({
   );
 };
 
+// ── Main Page ──
+type PageView = "dashboard" | "library" | "verbDetail";
+
 const ConjugationsPage = () => {
+  const navigate = useNavigate();
   const verbs = useMemo(parseConjugations, []);
+  const [view, setView] = useState<PageView>("dashboard");
   const [selectedVerb, setSelectedVerb] = useState<VerbData | null>(null);
   const [filters, setFilters] = useState<ConjugationFilters>(DEFAULT_FILTERS);
+
+  const handleStartReview = () => {
+    navigate("/games/conjugaciones");
+  };
+
+  const handleSelectVerb = (verb: VerbData) => {
+    setSelectedVerb(verb);
+    setView("verbDetail");
+  };
+
+  const handleBackToLibrary = () => {
+    setSelectedVerb(null);
+    setView("library");
+  };
+
+  const handleBackToDashboard = () => {
+    setSelectedVerb(null);
+    setView("dashboard");
+  };
+
+  const getHeaderTitle = () => {
+    switch (view) {
+      case "dashboard": return "Conjugaciones";
+      case "library": return "Biblioteca de verbos";
+      case "verbDetail": return "";
+      default: return "Conjugaciones";
+    }
+  };
+
+  const showBackButton = view === "library";
 
   return (
     <div className="min-h-[100dvh] bg-background pb-20">
       {/* Top header */}
-      <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
-          <div className="w-9" />
-          <h1 className="text-base font-bold text-foreground">Conjugaciones</h1>
-          <ConjugationSettings filters={filters} onChange={setFilters} />
-        </div>
-      </header>
+      {view !== "verbDetail" && (
+        <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-lg">
+          <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
+            {showBackButton ? (
+              <button
+                onClick={handleBackToDashboard}
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-primary hover:bg-muted/50 transition-colors"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+            ) : (
+              <div className="w-9" />
+            )}
+            <h1 className="text-base font-bold text-foreground">{getHeaderTitle()}</h1>
+            {view === "library" ? (
+              <ConjugationSettings filters={filters} onChange={setFilters} />
+            ) : (
+              <div className="w-9" />
+            )}
+          </div>
+        </header>
+      )}
 
       <div className="mx-auto max-w-2xl">
         <AnimatePresence mode="wait">
-          {selectedVerb ? (
-            <VerbDetailView
-              key={selectedVerb.verb}
-              verbData={selectedVerb}
-              onBack={() => setSelectedVerb(null)}
-              filters={filters}
-            />
-          ) : (
+          {view === "dashboard" && (
             <motion.div
-              key="list"
+              key="dashboard"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 0.2 }}
             >
-              <VerbListView verbs={verbs} onSelect={setSelectedVerb} />
+              <DashboardView
+                onStartReview={handleStartReview}
+                onOpenLibrary={() => setView("library")}
+              />
             </motion.div>
+          )}
+
+          {view === "library" && (
+            <motion.div
+              key="library"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.2 }}
+            >
+              <VerbListView verbs={verbs} onSelect={handleSelectVerb} />
+            </motion.div>
+          )}
+
+          {view === "verbDetail" && selectedVerb && (
+            <VerbDetailView
+              key={selectedVerb.verb}
+              verbData={selectedVerb}
+              onBack={handleBackToLibrary}
+              filters={filters}
+            />
           )}
         </AnimatePresence>
       </div>
