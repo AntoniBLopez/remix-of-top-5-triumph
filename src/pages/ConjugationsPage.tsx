@@ -48,24 +48,11 @@ const MOCK_STATS = {
   totalVerbs: 10,
 };
 
-const TENSE_PROGRESS = [
-  { id: "prasens", label: "Präsens", emoji: "🔵", mastered: 18, total: 27, color: "from-blue-500 to-cyan-400" },
-  { id: "prateritum", label: "Präteritum", emoji: "🟠", mastered: 10, total: 27, color: "from-orange-500 to-amber-400" },
-  { id: "perfekt", label: "Perfekt", emoji: "🟢", mastered: 6, total: 20, color: "from-emerald-500 to-green-400" },
-];
-
-const WEAK_SPOTS = [
-  { verb: "sprechen", tense: "Präteritum", pronoun: "du", accuracy: 40 },
-  { verb: "fahren", tense: "Präsens", pronoun: "er/sie", accuracy: 50 },
-  { verb: "lesen", tense: "Perfekt", pronoun: "ich", accuracy: 55 },
-  { verb: "sehen", tense: "Präteritum", pronoun: "ich", accuracy: 60 },
-];
-
-// ── Types ──
-interface VerbData {
-  verb: string;
-  tenses: Record<string, { pronoun: string; form: string }[]>;
-}
+const TENSE_COLORS: Record<string, { emoji: string; color: string }> = {
+  "Präsens": { emoji: "🔵", color: "from-blue-500 to-cyan-400" },
+  "Präteritum": { emoji: "🟠", color: "from-orange-500 to-amber-400" },
+  "Perfekt": { emoji: "🟢", color: "from-emerald-500 to-green-400" },
+};
 
 function parseConjugations(): VerbData[] {
   const verbMap = new Map<string, Record<string, { pronoun: string; form: string }[]>>();
