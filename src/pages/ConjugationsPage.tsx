@@ -147,7 +147,7 @@ const DashboardView = ({ onStartReview, onOpenLibrary }: { onStartReview: () => 
         </div>
         <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
           <Brain className="h-5 w-5 text-primary" />
-          <p className="text-xl font-extrabold text-foreground">{stats.masteredVerbs}</p>
+          <p className="text-xl font-extrabold text-foreground">{stats.masteredCards}</p>
           <p className="text-[10px] font-medium text-muted-foreground">Dominados</p>
         </div>
         <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
