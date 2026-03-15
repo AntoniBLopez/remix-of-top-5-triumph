@@ -453,7 +453,7 @@ const ConjugationsPage = () => {
   const [filters, setFilters] = useState<ConjugationFilters>(DEFAULT_FILTERS);
 
   const handleStartReview = () => {
-    navigate("/games/conjugaciones");
+    navigate("/conjugations/review");
   };
 
   const handleSelectVerb = (verb: VerbData) => {
