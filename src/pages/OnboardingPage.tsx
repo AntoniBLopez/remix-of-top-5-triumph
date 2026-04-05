@@ -240,6 +240,7 @@ const CalibrationStep = ({
   onChange,
   onSkip,
   onBack,
+  onSkipAll,
   totalCards,
 }: {
   cards: CalibrationCard[];
@@ -251,6 +252,7 @@ const CalibrationStep = ({
   onChange: (val: string) => void;
   onSkip: () => void;
   onBack: () => void;
+  onSkipAll: () => void;
   totalCards: number;
 }) => {
   const card = cards[currentIndex];
@@ -381,6 +383,16 @@ const CalibrationStep = ({
               </Button>
             )}
           </div>
+
+          {/* Skip calibration */}
+          {!showFeedback && (
+            <button
+              onClick={onSkipAll}
+              className="mx-auto mt-4 block text-xs text-muted-foreground/70 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+            >
+              Omitir test de calibración
+            </button>
+          )}
         </motion.div>
       </AnimatePresence>
     </motion.div>
@@ -567,6 +579,15 @@ const OnboardingPage = () => {
     setTimeout(() => advanceCard(), 1200);
   }, [showFeedback, cardIndex, calibrationDeck, advanceCard]);
 
+  const handleSkipCalibration = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      level: "beginner",
+      calibrationResults: [],
+    }));
+    setStep("results");
+  }, []);
+
   const handleFinish = () => {
     localStorage.setItem(
       "onboarding",
@@ -630,6 +651,7 @@ const OnboardingPage = () => {
               onChange={setUserAnswer}
               onSkip={handleSkip}
               onBack={() => setStep("goals")}
+              onSkipAll={handleSkipCalibration}
               totalCards={calibrationDeck.length}
             />
           )}
