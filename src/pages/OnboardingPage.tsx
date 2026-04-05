@@ -579,6 +579,15 @@ const OnboardingPage = () => {
     setTimeout(() => advanceCard(), 1200);
   }, [showFeedback, cardIndex, calibrationDeck, advanceCard]);
 
+  const handleSkipCalibration = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      level: "beginner",
+      calibrationResults: [],
+    }));
+    setStep("results");
+  }, []);
+
   const handleFinish = () => {
     localStorage.setItem(
       "onboarding",
