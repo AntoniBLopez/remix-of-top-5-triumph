@@ -239,6 +239,7 @@ const CalibrationStep = ({
   onAnswer,
   onChange,
   onSkip,
+  onBack,
   totalCards,
 }: {
   cards: CalibrationCard[];
@@ -249,6 +250,7 @@ const CalibrationStep = ({
   onAnswer: () => void;
   onChange: (val: string) => void;
   onSkip: () => void;
+  onBack: () => void;
   totalCards: number;
 }) => {
   const card = cards[currentIndex];
