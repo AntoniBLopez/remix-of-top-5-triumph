@@ -28,6 +28,7 @@ const MODES = [
 const HomePage = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const [showSuper, setShowSuper] = useState(false);
 
   return (
     <div className="min-h-[100dvh] bg-background pb-20">
