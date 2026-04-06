@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, PenLine, Sun, Moon, Flame, Gamepad2 } from "lucide-react";
+import { BookOpen, PenLine, Sun, Moon, Flame, Gamepad2, Crown } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import BottomNav from "@/components/BottomNav";
-
+import SuperUpgradeDialog from "@/components/SuperUpgradeDialog";
 const MOCK_STREAK = 7;
 
 const MODES = [
