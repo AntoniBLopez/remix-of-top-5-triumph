@@ -77,7 +77,7 @@ const SelfAssessmentStep = ({ selected, onSelect, onNext, onBack }: SelfAssessme
                 : "border-border bg-card hover:border-primary/30"
             }`}
           >
-            <span className="text-2xl">{opt.emoji}</span>
+            <BarIcon level={opt.level} active={isSelected} />
             <div className="flex-1 text-left">
               <p className="text-sm font-extrabold text-foreground">{opt.label}</p>
               <p className="text-xs text-muted-foreground">{opt.desc}</p>
