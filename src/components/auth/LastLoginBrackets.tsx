@@ -12,62 +12,45 @@ const LastLoginBrackets = ({ isHighlighted, children, label }: LastLoginBrackets
       <AnimatePresence>
         {isHighlighted && (
           <motion.div
-            className="absolute -inset-[6px] pointer-events-none z-10 rounded-2xl"
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.97 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute -inset-[3px] pointer-events-none z-10 rounded-2xl overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Gradient glow behind */}
-            <div className="absolute inset-0 rounded-2xl bg-primary/8 blur-sm" />
-
+            {/* Soft glowing corners using radial gradients */}
             {/* Top-left */}
-            <motion.span
-              className="absolute top-0 left-0 w-7 h-7 pointer-events-none"
-              initial={{ opacity: 0, x: 4, y: 4 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.3 }}
-            >
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M2 20V8C2 4.68629 4.68629 2 8 2H20" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </motion.span>
-
+            <div
+              className="absolute -top-4 -left-4 w-20 h-20"
+              style={{
+                background: "radial-gradient(circle at center, hsl(var(--primary) / 0.55) 0%, hsl(var(--primary) / 0.15) 40%, transparent 70%)",
+                filter: "blur(6px)",
+              }}
+            />
             {/* Top-right */}
-            <motion.span
-              className="absolute top-0 right-0 w-7 h-7 pointer-events-none"
-              initial={{ opacity: 0, x: -4, y: 4 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.3 }}
-            >
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M8 2H20C23.3137 2 26 4.68629 26 8V20" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </motion.span>
-
+            <div
+              className="absolute -top-4 -right-4 w-20 h-20"
+              style={{
+                background: "radial-gradient(circle at center, hsl(var(--primary) / 0.55) 0%, hsl(var(--primary) / 0.15) 40%, transparent 70%)",
+                filter: "blur(6px)",
+              }}
+            />
             {/* Bottom-left */}
-            <motion.span
-              className="absolute bottom-0 left-0 w-7 h-7 pointer-events-none"
-              initial={{ opacity: 0, x: 4, y: -4 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.3 }}
-            >
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M2 8V20C2 23.3137 4.68629 26 8 26H20" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </motion.span>
-
+            <div
+              className="absolute -bottom-4 -left-4 w-20 h-20"
+              style={{
+                background: "radial-gradient(circle at center, hsl(var(--primary) / 0.55) 0%, hsl(var(--primary) / 0.15) 40%, transparent 70%)",
+                filter: "blur(6px)",
+              }}
+            />
             {/* Bottom-right */}
-            <motion.span
-              className="absolute bottom-0 right-0 w-7 h-7 pointer-events-none"
-              initial={{ opacity: 0, x: -4, y: -4 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.3 }}
-            >
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M26 8V20C26 23.3137 23.3137 26 20 26H8" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </motion.span>
+            <div
+              className="absolute -bottom-4 -right-4 w-20 h-20"
+              style={{
+                background: "radial-gradient(circle at center, hsl(var(--primary) / 0.55) 0%, hsl(var(--primary) / 0.15) 40%, transparent 70%)",
+                filter: "blur(6px)",
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
