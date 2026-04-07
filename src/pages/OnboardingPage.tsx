@@ -8,7 +8,8 @@ import { WordsArray } from "@/types/game";
 import WelcomeStep from "@/components/onboarding/WelcomeStep";
 import MotivationStep, { type MotivationId } from "@/components/onboarding/MotivationStep";
 import SelfAssessmentStep, { type SelfAssessmentId } from "@/components/onboarding/SelfAssessmentStep";
-import MemoryScienceStep from "@/components/onboarding/MemoryScienceStep";
+import MemoryRetentionStep from "@/components/onboarding/MemoryRetentionStep";
+import MemoryEfficiencyStep from "@/components/onboarding/MemoryEfficiencyStep";
 import PromisesStep from "@/components/onboarding/PromisesStep";
 import DailyGoalStep from "@/components/onboarding/DailyGoalStep";
 import NotificationsStep from "@/components/onboarding/NotificationsStep";
@@ -33,7 +34,8 @@ type Step =
   | "welcome"
   | "motivation"
   | "self-assessment"
-  | "memory-science"
+  | "memory-retention"
+  | "memory-efficiency"
   | "promises"
   | "daily-goal"
   | "notifications"
@@ -44,7 +46,8 @@ const ALL_STEPS: Step[] = [
   "welcome",
   "motivation",
   "self-assessment",
-  "memory-science",
+  "memory-retention",
+  "memory-efficiency",
   "promises",
   "daily-goal",
   "notifications",
@@ -336,22 +339,29 @@ const OnboardingPage = () => {
               key="self-assessment"
               selected={state.selfAssessment}
               onSelect={(id) => setState((p) => ({ ...p, selfAssessment: id }))}
-              onNext={() => goTo("memory-science")}
+              onNext={() => goTo("memory-retention")}
               onBack={() => setStep("motivation")}
             />
           )}
-          {step === "memory-science" && (
-            <MemoryScienceStep
-              key="memory-science"
-              onNext={() => goTo("promises")}
+          {step === "memory-retention" && (
+            <MemoryRetentionStep
+              key="memory-retention"
+              onNext={() => goTo("memory-efficiency")}
               onBack={() => setStep("self-assessment")}
+            />
+          )}
+          {step === "memory-efficiency" && (
+            <MemoryEfficiencyStep
+              key="memory-efficiency"
+              onNext={() => goTo("promises")}
+              onBack={() => setStep("memory-retention")}
             />
           )}
           {step === "promises" && (
             <PromisesStep
               key="promises"
               onNext={() => goTo("daily-goal")}
-              onBack={() => setStep("memory-science")}
+              onBack={() => setStep("memory-efficiency")}
             />
           )}
           {step === "daily-goal" && (
