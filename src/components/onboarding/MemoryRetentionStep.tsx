@@ -36,10 +36,8 @@ const MemoryRetentionStep = ({ onNext, onBack }: MemoryRetentionStepProps) => (
   >
     {/* Header */}
     <div className="mb-6 text-center">
-      <p className="text-sm font-semibold text-muted-foreground mb-1">¿Qué nos diferencia?</p>
-      <h2 className="text-xl font-extrabold text-foreground leading-tight">
-        Memoria que perdura
-      </h2>
+      <h2 className="text-xl font-extrabold text-foreground leading-tight">¿Qué nos diferencia?</h2>
+      <p className="mt-1 text-lg font-bold text-primary">Memoria que perdura</p>
       <p className="mt-2 text-sm text-muted-foreground">
         No es memorización bruta. Es ciencia aplicada a tu aprendizaje.
       </p>
