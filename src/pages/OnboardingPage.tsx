@@ -33,6 +33,7 @@ type Step =
   | "welcome"
   | "motivation"
   | "self-assessment"
+  | "memory-science"
   | "promises"
   | "daily-goal"
   | "notifications"
