@@ -60,11 +60,11 @@ function buildCalibrationDeck(): CalibrationCard[] {
   const allCards: CalibrationCard[] = [];
   let id = 0;
 
-  const tenseKeys = ["prasens", "prateritum", "perfekt"] as const;
+  const tenseKeys = ["presente", "preterito", "imperfecto"] as const;
   const tenseLabels: Record<string, string> = {
-    prasens: "Präsens",
-    prateritum: "Präteritum",
-    perfekt: "Perfekt",
+    presente: "Presente",
+    preterito: "Pretérito",
+    imperfecto: "Imperfecto",
   };
 
   for (const tenseKey of tenseKeys) {
