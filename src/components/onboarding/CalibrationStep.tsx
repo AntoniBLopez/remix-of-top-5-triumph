@@ -173,6 +173,6 @@ const CalibrationStep = forwardRef<HTMLDivElement, CalibrationStepProps>(({
       </AnimatePresence>
     </motion.div>
   );
-};
+});
 
-export default CalibrationStep;
+CalibrationStep.displayName = "CalibrationStep";
