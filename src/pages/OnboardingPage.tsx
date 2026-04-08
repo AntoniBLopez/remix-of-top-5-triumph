@@ -14,6 +14,7 @@ import PromisesStep from "@/components/onboarding/PromisesStep";
 import DailyGoalStep from "@/components/onboarding/DailyGoalStep";
 import NotificationsStep from "@/components/onboarding/NotificationsStep";
 import CalibrationStep, { type CalibrationCard } from "@/components/onboarding/CalibrationStep";
+import { playCorrectSound } from "@/lib/sounds";
 import ResultsStep from "@/components/onboarding/ResultsStep";
 
 // ── Types ──
@@ -202,6 +203,7 @@ const OnboardingPage = () => {
     const correct = userAnswer.trim().toLowerCase() === card.answer.toLowerCase();
     setIsCorrect(correct);
     setShowFeedback(true);
+    if (correct) playCorrectSound();
 
     setState((prev) => ({
       ...prev,
