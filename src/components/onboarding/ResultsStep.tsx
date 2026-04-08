@@ -239,11 +239,19 @@ const ResultsStep = ({ results, level, dailyGoal, calibrationMode, onFinish }: R
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mb-8 rounded-2xl border border-primary/30 bg-card p-5"
+          className="mb-8 rounded-2xl border border-primary/30 bg-card p-4"
         >
-          <p className="text-sm font-extrabold text-foreground mb-1">Personalización progresiva</p>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            En las primeras sesiones detectaremos tus tiempos y pronombres más débiles para personalizar la cola.
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <Sparkles className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-extrabold text-foreground">Personalización progresiva</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                En las primeras sesiones detectaremos tus tiempos y pronombres más débiles para personalizar la cola.
+              </p>
+            </div>
+          </div>
           </p>
         </motion.div>
       )}
