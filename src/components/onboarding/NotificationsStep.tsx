@@ -95,7 +95,7 @@ const NotificationsStep = ({ onNext, onBack, onSkip }: NotificationsStepProps) =
             <div className="flex-1">
               <span className="text-sm font-medium text-foreground">Recordatorio diario por email</span>
               <p className="mt-0.5 text-xs text-muted-foreground leading-snug">
-                Recibe un email cuando tengas tarjetas pendientes de repaso
+                FSRS te notifica por email en el momento óptimo de repasar
               </p>
             </div>
             <Checkbox
