@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Zap, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Zap, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
