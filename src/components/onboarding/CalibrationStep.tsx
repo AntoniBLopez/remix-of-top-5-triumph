@@ -27,7 +27,7 @@ interface CalibrationStepProps {
   totalCards: number;
 }
 
-const CalibrationStep = ({
+const CalibrationStep = forwardRef<HTMLDivElement, CalibrationStepProps>(({
   cards,
   currentIndex,
   userAnswer,
@@ -39,7 +39,7 @@ const CalibrationStep = ({
   onBack,
   onSkipAll,
   totalCards,
-}: CalibrationStepProps) => {
+}, ref) => {
   const card = cards[currentIndex];
   if (!card) return null;
   const progress = (currentIndex / totalCards) * 100;
