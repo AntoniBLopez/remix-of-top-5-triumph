@@ -185,16 +185,6 @@ const ResultsStep = ({ results, level, dailyGoal, calibrationMode, onFinish }: R
                 )}
               </div>
 
-              <div className="border-t border-border pt-3">
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {weakPoints.weakTenses.length > 0 && (
-                    <>Empieza reforzando <span className="font-semibold text-foreground">{weakPoints.weakTenses[0]}</span>. </>
-                  )}
-                  {weakPoints.weakPronouns.length > 0 && (
-                    <>Dedica 3 minutos extra a <span className="font-semibold text-foreground">{weakPoints.weakPronouns[0]}</span>.</>
-                  )}
-                </p>
-              </div>
             </motion.div>
           )}
         </>
