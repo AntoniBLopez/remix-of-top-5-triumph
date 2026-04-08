@@ -103,8 +103,8 @@ const ConjugationSettings = ({ filters, onChange }: Props) => {
 };
 
 export const DEFAULT_FILTERS: ConjugationFilters = {
-  tenses: { Präsens: true, Präteritum: true, Perfekt: true },
-  pronouns: { ich: true, du: true, "er/sie": true },
+  tenses: { Presente: true, Pretérito: true, Imperfecto: true },
+  pronouns: { yo: true, tú: true, "él/ella": true },
 };
 
 export default ConjugationSettings;
