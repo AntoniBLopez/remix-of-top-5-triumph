@@ -79,14 +79,18 @@ const ResultsStep = ({ results, level, dailyGoal, calibrationMode, onFinish }: R
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
           className="mb-4 flex h-24 w-24 items-center justify-center rounded-3xl bg-primary/10"
         >
-          <span className="text-5xl">{levelEmoji}</span>
+          {calibrationMode === "skipped" ? (
+            <Zap className="h-12 w-12 text-amber-500" />
+          ) : (
+            <span className="text-5xl">{levelEmoji}</span>
+          )}
         </motion.div>
 
         {calibrationMode === "skipped" ? (
           <>
-            <h2 className="text-2xl font-extrabold text-foreground">¡Todo listo!</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Empezarás desde el nivel principiante. El sistema se adaptará a ti.
+            <h2 className="text-2xl font-extrabold text-foreground">Configuración rápida lista</h2>
+            <p className="mt-1 text-sm text-muted-foreground text-center">
+              Empezaremos con una mezcla equilibrada y ajustaremos automáticamente según tu rendimiento.
             </p>
           </>
         ) : (
