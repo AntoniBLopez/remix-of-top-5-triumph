@@ -204,7 +204,32 @@ const ResultsStep = ({ results, level, dailyGoal, calibrationMode, onFinish }: R
         </div>
       </div>
 
-      <Button
+      {weakPoints && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mb-8 rounded-2xl border border-border bg-card p-4"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+              <Lightbulb className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-foreground">Recomendaciones</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {weakPoints.weakTenses.length > 0 && (
+                  <>Empieza reforzando <span className="font-semibold text-foreground">{weakPoints.weakTenses[0]}</span>. </>
+                )}
+                {weakPoints.weakPronouns.length > 0 && (
+                  <>Dedica 3 minutos extra a <span className="font-semibold text-foreground">{weakPoints.weakPronouns[0]}</span>.</>
+                )}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
         onClick={onFinish}
         className="h-14 w-full rounded-2xl text-base font-extrabold gap-2"
       >
