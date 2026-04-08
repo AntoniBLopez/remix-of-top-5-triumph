@@ -134,6 +134,69 @@ const ResultsStep = ({ results, level, dailyGoal, calibrationMode, onFinish }: R
               })}
             </div>
           )}
+
+          {weakPoints && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mb-6 rounded-2xl border border-border bg-card p-5 space-y-4"
+            >
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-500" />
+                <h3 className="text-sm font-extrabold text-foreground">Puntos a reforzar</h3>
+              </div>
+
+              <div className="space-y-3">
+                {weakPoints.weakTenses.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Tiempos débiles
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {weakPoints.weakTenses.map((t) => (
+                        <span
+                          key={t}
+                          className="inline-flex items-center rounded-lg bg-amber-500/10 px-2.5 py-1 text-xs font-bold text-amber-600 dark:text-amber-400"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {weakPoints.weakPronouns.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Pronombres débiles
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {weakPoints.weakPronouns.map((p) => (
+                        <span
+                          key={p}
+                          className="inline-flex items-center rounded-lg bg-amber-500/10 px-2.5 py-1 text-xs font-bold text-amber-600 dark:text-amber-400"
+                        >
+                          {p}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t border-border pt-3">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {weakPoints.weakTenses.length > 0 && (
+                    <>Empieza reforzando <span className="font-semibold text-foreground">{weakPoints.weakTenses[0]}</span>. </>
+                  )}
+                  {weakPoints.weakPronouns.length > 0 && (
+                    <>Dedica 3 minutos extra a <span className="font-semibold text-foreground">{weakPoints.weakPronouns[0]}</span>.</>
+                  )}
+                </p>
+              </div>
+            </motion.div>
+          )}
         </>
       )}
 
