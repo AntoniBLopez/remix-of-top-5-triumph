@@ -252,7 +252,6 @@ const ResultsStep = ({ results, level, dailyGoal, calibrationMode, onFinish }: R
               </p>
             </div>
           </div>
-          </p>
         </motion.div>
       )}
 
