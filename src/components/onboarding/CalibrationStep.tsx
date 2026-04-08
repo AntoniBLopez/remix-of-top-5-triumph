@@ -46,6 +46,7 @@ const CalibrationStep = forwardRef<HTMLDivElement, CalibrationStepProps>(({
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
