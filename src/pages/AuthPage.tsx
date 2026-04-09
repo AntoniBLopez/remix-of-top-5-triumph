@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import LastLoginBrackets from "@/components/auth/LastLoginBrackets";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 type LoginMethod = "email" | "google" | "apple";
 
@@ -76,17 +77,22 @@ const AuthPage = () => {
     setSubmitting(true);
     localStorage.setItem("lastLoginMethod", "google");
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}${redirectTo}`,
-      },
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
     });
 
-    if (error) {
-      toast({ title: "No se pudo iniciar con Google", description: error.message, variant: "destructive" });
+    if (result.error) {
+      toast({ title: "No se pudo iniciar con Google", description: String(result.error), variant: "destructive" });
       setSubmitting(false);
+      return;
     }
+
+    if (result.redirected) {
+      setSubmitting(false);
+      return;
+    }
+
+    navigate(redirectTo, { replace: true });
   };
 
   const handleAppleLogin = () => {
