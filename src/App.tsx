@@ -16,6 +16,10 @@ import SmartReviewPage from "./pages/SmartReviewPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
+import AdminBlogPage from "./pages/AdminBlogPage";
+import AdminBlogEditorPage from "./pages/AdminBlogEditorPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +44,11 @@ const App = () => (
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/ranking" element={<RankingPage />} />
             <Route path="/games/:mode" element={<GamesPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/admin/blog" element={<AdminBlogPage />} />
+            <Route path="/admin/blog/new" element={<AdminBlogEditorPage />} />
+            <Route path="/admin/blog/edit/:id" element={<AdminBlogEditorPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
