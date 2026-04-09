@@ -44,6 +44,11 @@ const App = () => (
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/ranking" element={<RankingPage />} />
             <Route path="/games/:mode" element={<GamesPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/admin/blog" element={<AdminBlogPage />} />
+            <Route path="/admin/blog/new" element={<AdminBlogEditorPage />} />
+            <Route path="/admin/blog/edit/:id" element={<AdminBlogEditorPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
