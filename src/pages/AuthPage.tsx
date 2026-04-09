@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Eye, EyeOff, Gamepad2, Mail, Lock, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import LastLoginBrackets from "@/components/auth/LastLoginBrackets";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 type LoginMethod = "email" | "google" | "apple";
 
@@ -16,13 +18,18 @@ const LOGIN_METHOD_LABELS: Record<LoginMethod, string> = {
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { theme, toggleTheme } = useTheme();
+  const { toast } = useToast();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [lastMethod, setLastMethod] = useState<LoginMethod | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const redirectTo = searchParams.get("redirect") || "/home";
 
   useEffect(() => {
     const stored = localStorage.getItem("lastLoginMethod") as LoginMethod | null;
@@ -31,15 +38,121 @@ const AuthPage = () => {
     }
   }, []);
 
-  const handleLogin = (method: LoginMethod) => {
-    localStorage.setItem("lastLoginMethod", method);
-    navigate("/home");
+  useEffect(() => {
+    let isActive = true;
+
+    const syncSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!isActive) return;
+
+      if (session) {
+        navigate(redirectTo, { replace: true });
+        return;
+      }
+
+      setCheckingSession(false);
+    };
+
+    syncSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        navigate(redirectTo, { replace: true });
+      }
+    });
+
+    return () => {
+      isActive = false;
+      subscription.unsubscribe();
+    };
+  }, [navigate, redirectTo]);
+
+  const handleGoogleLogin = async () => {
+    setSubmitting(true);
+    localStorage.setItem("lastLoginMethod", "google");
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}${redirectTo}`,
+      },
+    });
+
+    if (error) {
+      toast({ title: "No se pudo iniciar con Google", description: error.message, variant: "destructive" });
+      setSubmitting(false);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin("email");
+  const handleAppleLogin = () => {
+    toast({
+      title: "Apple no está disponible todavía",
+      description: "Usa email o Google para iniciar sesión por ahora.",
+      variant: "destructive",
+    });
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setSubmitting(true);
+
+    if (isLogin) {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        toast({ title: "No se pudo iniciar sesión", description: error.message, variant: "destructive" });
+        setSubmitting(false);
+        return;
+      }
+
+      localStorage.setItem("lastLoginMethod", "email");
+      navigate(redirectTo, { replace: true });
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: name ? { name } : undefined,
+        emailRedirectTo: `${window.location.origin}${redirectTo}`,
+      },
+    });
+
+    if (error) {
+      toast({ title: "No se pudo crear la cuenta", description: error.message, variant: "destructive" });
+      setSubmitting(false);
+      return;
+    }
+
+    localStorage.setItem("lastLoginMethod", "email");
+
+    if (data.session) {
+      navigate(redirectTo, { replace: true });
+      return;
+    }
+
+    toast({
+      title: "Cuenta creada",
+      description: "Revisa tu correo para confirmar tu cuenta antes de entrar.",
+    });
+    setIsLogin(true);
+    setSubmitting(false);
+  };
+
+  if (checkingSession) {
+    return (
+      <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background">
@@ -107,7 +220,8 @@ const AuthPage = () => {
                   type="button"
                   variant="outline"
                   className="w-full h-12 rounded-xl font-medium gap-2.5 text-sm"
-                  onClick={() => handleLogin("google")}
+                  onClick={handleGoogleLogin}
+                  disabled={submitting}
                 >
                   <svg className="h-4 w-4" viewBox="0 0 24 24">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -125,7 +239,8 @@ const AuthPage = () => {
                   type="button"
                   variant="outline"
                   className="w-full h-12 rounded-xl font-medium gap-2.5 text-sm"
-                  onClick={() => handleLogin("apple")}
+                  onClick={handleAppleLogin}
+                  disabled={submitting}
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.18 0-.36-.02-.53-.06-.01-.18-.04-.56-.04-.95 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.44zm2.033 17.86c-.07.14-.15.28-.24.42-.56.84-1.31 1.89-2.32 1.89-.88 0-1.17-.57-2.42-.57-1.26 0-1.6.55-2.42.59-1.08.04-1.9-1.15-2.46-1.98-1.63-2.42-1.84-5.27-.81-6.78.73-1.07 1.89-1.7 2.98-1.7 1.11 0 1.81.57 2.73.57.89 0 1.43-.57 2.71-.57.94 0 1.96.51 2.68 1.4-2.36 1.3-1.98 4.67.38 5.57-.46 1.17-.67 1.7-1.25 2.72z" />
@@ -162,6 +277,7 @@ const AuthPage = () => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="pl-10"
+                      disabled={submitting}
                       required
                     />
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -180,6 +296,7 @@ const AuthPage = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
+                    disabled={submitting}
                     required
                   />
                   <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -195,6 +312,7 @@ const AuthPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10"
+                    disabled={submitting}
                     required
                     minLength={6}
                   />
@@ -221,8 +339,8 @@ const AuthPage = () => {
                 </div>
               )}
 
-              <Button type="submit" className="w-full h-11 text-base font-bold rounded-xl">
-                {isLogin ? "Los geht's! 🚀" : "Konto erstellen 🎉"}
+              <Button type="submit" className="w-full h-11 text-base font-bold rounded-xl" disabled={submitting}>
+                {submitting ? "Cargando..." : isLogin ? "Los geht's! 🚀" : "Konto erstellen 🎉"}
               </Button>
             </form>
 

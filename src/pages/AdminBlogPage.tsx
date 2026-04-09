@@ -7,70 +7,72 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useToast } from "@/hooks/use-toast";
-
-const ADMIN_PASSWORD = "verboflow2024";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 export default function AdminBlogPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [authed, setAuthed] = useState(() => localStorage.getItem("blog_admin") === "true");
-  const [password, setPassword] = useState("");
+  const { checkingAuth, isAuthenticated } = useRequireAuth("/admin/blog");
   const [posts, setPosts] = useState<Tables<"blog_posts">[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchPosts = async () => {
-    // Need auth session for reading drafts
-    const { data } = await supabase
+    setLoading(true);
+    const { data, error } = await supabase
       .from("blog_posts")
       .select("*")
       .order("created_at", { ascending: false });
+
+    if (error) {
+      toast({ title: "Error al cargar artículos", description: error.message, variant: "destructive" });
+    }
+
     setPosts(data || []);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (authed) fetchPosts();
-  }, [authed]);
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      localStorage.setItem("blog_admin", "true");
-      setAuthed(true);
-    } else {
-      toast({ title: "Contraseña incorrecta", variant: "destructive" });
-    }
-  };
+    if (isAuthenticated) fetchPosts();
+  }, [isAuthenticated]);
 
   const togglePublish = async (post: Tables<"blog_posts">) => {
-    await supabase.from("blog_posts").update({ published: !post.published }).eq("id", post.id);
+    const { error } = await supabase.from("blog_posts").update({ published: !post.published }).eq("id", post.id);
+
+    if (error) {
+      toast({ title: "No se pudo actualizar el estado", description: error.message, variant: "destructive" });
+      return;
+    }
+
     fetchPosts();
   };
 
   const deletePost = async (id: string) => {
     if (!confirm("¿Eliminar este artículo?")) return;
-    await supabase.from("blog_posts").delete().eq("id", id);
+
+    const { error } = await supabase.from("blog_posts").delete().eq("id", id);
+
+    if (error) {
+      toast({ title: "No se pudo eliminar el artículo", description: error.message, variant: "destructive" });
+      return;
+    }
+
     fetchPosts();
   };
 
-  if (!authed) {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth?redirect=%2Fadmin%2Fblog", { replace: true });
+  };
+
+  if (checkingAuth) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-4">
-        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4 rounded-2xl border border-border/50 bg-card p-8">
-          <h1 className="text-2xl font-bold text-foreground">Admin Blog</h1>
-          <p className="text-sm text-muted-foreground">Introduce la contraseña de administrador</p>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Contraseña"
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          />
-          <Button type="submit" className="w-full">Entrar</Button>
-        </form>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -89,10 +91,7 @@ export default function AdminBlogPage() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => {
-                localStorage.removeItem("blog_admin");
-                setAuthed(false);
-              }}
+              onClick={handleLogout}
             >
               <LogOut className="h-4 w-4" />
             </Button>

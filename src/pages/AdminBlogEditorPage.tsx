@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 const CATEGORIES = ["Gramática", "Vocabulario", "Cultura", "Consejos", "Pronunciación"];
 
@@ -34,6 +35,8 @@ export default function AdminBlogEditorPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isEdit = !!id;
+  const redirectPath = isEdit && id ? `/admin/blog/edit/${id}` : "/admin/blog/new";
+  const { checkingAuth, isAuthenticated } = useRequireAuth(redirectPath);
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -48,13 +51,7 @@ export default function AdminBlogEditorPage() {
   const [slugManual, setSlugManual] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("blog_admin")) {
-      navigate("/admin/blog");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (isEdit) {
+    if (isEdit && isAuthenticated) {
       supabase
         .from("blog_posts")
         .select("*")
@@ -75,7 +72,7 @@ export default function AdminBlogEditorPage() {
           }
         });
     }
-  }, [id, isEdit]);
+  }, [id, isAuthenticated, isEdit]);
 
   useEffect(() => {
     if (!slugManual && title) {
@@ -86,6 +83,16 @@ export default function AdminBlogEditorPage() {
   const readingTime = useMemo(() => estimateReadingTime(content), [content]);
 
   const handleSave = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      toast({ title: "Tu sesión expiró", description: "Vuelve a iniciar sesión para guardar.", variant: "destructive" });
+      navigate(`/auth?redirect=${encodeURIComponent(redirectPath)}`, { replace: true });
+      return;
+    }
+
     if (!title.trim() || !content.trim() || !slug.trim()) {
       toast({ title: "Título, slug y contenido son obligatorios", variant: "destructive" });
       return;
@@ -125,6 +132,16 @@ export default function AdminBlogEditorPage() {
       navigate("/admin/blog");
     }
   };
+
+  if (checkingAuth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-background">
