@@ -22,20 +22,20 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
   const trial = TRIAL_DAYS[selectedPlan];
 
   // Amber accents in both modes
-  const accent = dark ? "text-amber-400" : "text-amber-600";
-  const accentSolid = dark ? "text-amber-500" : "text-amber-700";
+  const accent = "text-amber-400";
+  const accentSolid = "text-amber-500";
   const accentBg = "bg-amber-400";
-  const accentBgLight = dark ? "bg-amber-400/15" : "bg-amber-500/20";
+  const accentBgLight = "bg-amber-400/15";
   const accentBorder = "border-amber-400";
-  const accentText = dark ? "text-amber-300" : "text-amber-700";
-  const accentSubtle = dark ? "text-amber-300/70" : "text-amber-700/90";
+  const accentText = "text-amber-300";
+  const accentSubtle = "text-amber-300/70";
 
   return (
     <div
       className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-slate-900"}`}
       style={{ background: dark
         ? "linear-gradient(160deg, #0f1628 0%, #141e3a 30%, #0d2a3a 60%, #0a2420 100%)"
-        : "linear-gradient(160deg, #c8daf0 0%, #b8d4e8 30%, #b0d8d4 60%, #b8e0c8 100%)"
+        : "linear-gradient(160deg, #8ba8c8 0%, #7a9dba 30%, #78b0ac 60%, #80b89e 100%)"
       }}
     >
       {/* Ambient blurs */}
