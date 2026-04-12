@@ -27,8 +27,8 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
   const accentBg = "bg-amber-400";
   const accentBgLight = "bg-amber-400/15";
   const accentBorder = "border-amber-400";
-  const accentText = "text-amber-300";
-  const accentSubtle = "text-amber-300/70";
+  const accentText = dark ? "text-amber-300" : "text-amber-600";
+  const accentSubtle = dark ? "text-amber-300/70" : "text-amber-600/80";
 
   return (
     <div
