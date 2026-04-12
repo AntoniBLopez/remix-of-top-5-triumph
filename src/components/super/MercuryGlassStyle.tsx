@@ -121,10 +121,20 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                 <p className="text-xs text-white/30 uppercase tracking-[0.2em] mb-8">Después de {trial} días gratis</p>
 
                 <div className="w-full space-y-3 mb-5">
-                  {plans.map((p) => {
+                  <AnimatePresence mode="popLayout">
+                  {plans.map((p, i) => {
                     const sel = selectedPlan === p.id;
                     return (
-                      <button key={p.id} onClick={() => setSelectedPlan(p.id)} className={`relative w-full border p-4 text-left transition-all ${sel ? "border-white bg-white/[0.05]" : "border-white/[0.06] hover:border-white/15"}`}>
+                      <motion.button
+                        key={p.id}
+                        layout
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: sel ? 1.03 : 1, transition: { delay: i * 0.06, duration: 0.3 } }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setSelectedPlan(p.id)}
+                        className={`relative w-full border text-left transition-colors duration-300 ${sel ? "border-white bg-white/[0.05] p-5" : "border-white/[0.06] hover:border-white/15 p-4"}`}
+                      >
                         {p.badge && (
                           <span className="absolute -top-2.5 left-3 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest bg-white text-black">
                             {p.badge}
@@ -132,22 +142,28 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                         )}
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className={`font-bold ${sel ? "text-white" : "text-white/40"}`}>{p.name}</p>
+                            <p className={`font-bold transition-all duration-300 ${sel ? "text-white text-base" : "text-white/40 text-sm"}`}>{p.name}</p>
                             {p.duration && <p className="text-xs text-white/50 mt-0.5">{p.duration}</p>}
                           </div>
                           <div className="flex items-center gap-3">
-                            <p className={`text-sm font-bold ${sel ? "text-white" : "text-white/20"}`}>{p.price}</p>
-                            <div className={`h-4 w-4 border transition-all ${sel ? "border-white bg-white" : "border-white/15"}`}>
+                            <p className={`font-bold transition-all duration-300 ${sel ? "text-white text-base" : "text-white/20 text-sm"}`}>{p.price}</p>
+                            <motion.div
+                              initial={false}
+                              animate={{ scale: sel ? 1 : 0.5, opacity: sel ? 1 : 0.3 }}
+                              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                              className={`h-4 w-4 border transition-colors ${sel ? "border-white bg-white" : "border-white/15"}`}
+                            >
                               {sel && <Check className="h-3 w-3 text-black" />}
-                            </div>
+                            </motion.div>
                           </div>
                         </div>
-                      </button>
+                      </motion.button>
                     );
                   })}
+                  </AnimatePresence>
                 </div>
 
-                <p className="text-[10px] text-white/50 text-center mb-6 max-w-xs uppercase tracking-wider">{PLAN_DETAILS[selectedPlan]}</p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-white/50 text-center mb-6 max-w-xs uppercase tracking-wider">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
                 <button onClick={onClose} className="w-full group flex items-center justify-between rounded-none border border-white/20 bg-white text-black py-4 px-6 font-black text-sm uppercase tracking-wider transition-all hover:bg-white/90 active:scale-[0.98]">
                   <span>Comenzar · {trial} días gratis</span>

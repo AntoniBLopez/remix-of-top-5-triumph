@@ -125,29 +125,47 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                 <p className="text-sm text-white/40 mb-8 text-center">Después de tu prueba de {trial} días</p>
 
                 <div className="w-full space-y-3 mb-5">
-                  {plans.map((p) => {
+                  <AnimatePresence mode="popLayout">
+                  {plans.map((p, i) => {
                     const sel = selectedPlan === p.id;
                     return (
-                      <button key={p.id} onClick={() => setSelectedPlan(p.id)} className={`relative w-full rounded-2xl border-2 p-4 text-left transition-all ${sel ? "border-amber-400/60 bg-amber-400/[0.06] shadow-[0_0_20px_hsl(40_90%_50%/0.08)]" : "border-white/[0.06] bg-white/[0.02] hover:border-white/10"}`}>
+                      <motion.button
+                        key={p.id}
+                        layout
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: sel ? 1.03 : 1, transition: { delay: i * 0.06, duration: 0.3 } }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setSelectedPlan(p.id)}
+                        className={`relative w-full rounded-2xl border-2 text-left transition-colors duration-300 ${sel ? "border-amber-400/60 bg-amber-400/[0.06] shadow-[0_0_25px_hsl(40_90%_50%/0.12)] p-5" : "border-white/[0.06] bg-white/[0.02] hover:border-white/10 p-4"}`}
+                      >
                         {p.badge && (
                           <span className="absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-amber-400 text-[#1a1a2e]">
                             {p.badge}
                           </span>
                         )}
-                        {sel && <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-amber-400 flex items-center justify-center shadow-md"><Check className="h-3.5 w-3.5 text-[#1a1a2e]" /></div>}
+                        <motion.div
+                          initial={false}
+                          animate={{ scale: sel ? 1 : 0, opacity: sel ? 1 : 0 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-amber-400 flex items-center justify-center shadow-md"
+                        >
+                          <Check className="h-3.5 w-3.5 text-[#1a1a2e]" />
+                        </motion.div>
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className={`font-bold text-base ${sel ? "text-white" : "text-white/60"}`}>{p.name}</p>
+                            <p className={`font-bold transition-all duration-300 ${sel ? "text-white text-base" : "text-white/60 text-sm"}`}>{p.name}</p>
                             {p.duration && <p className="text-xs text-white/25 mt-0.5">{p.duration}</p>}
                           </div>
-                          <p className={`font-bold text-sm ${sel ? "text-amber-300" : "text-white/30"}`}>{p.price}</p>
+                          <p className={`font-bold transition-all duration-300 ${sel ? "text-amber-300 text-base" : "text-white/30 text-sm"}`}>{p.price}</p>
                         </div>
-                      </button>
+                      </motion.button>
                     );
                   })}
+                  </AnimatePresence>
                 </div>
 
-                <p className="text-[10px] text-white/20 text-center mb-6 max-w-xs">{PLAN_DETAILS[selectedPlan]}</p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-white/20 text-center mb-6 max-w-xs">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
                 <button onClick={onClose} className="w-full rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 py-4 font-extrabold text-sm text-[#1a1a2e] shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] transition-all hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)] active:scale-[0.98]">
                   Comenzar prueba de {trial} días

@@ -125,10 +125,20 @@ export default function AerospaceStyle({ onClose }: Props) {
                 </h1>
 
                 <div className="w-full space-y-3 mb-5">
-                  {plans.map((p) => {
+                  <AnimatePresence mode="popLayout">
+                  {plans.map((p, i) => {
                     const sel = selectedPlan === p.id;
                     return (
-                      <button key={p.id} onClick={() => setSelectedPlan(p.id)} className={`relative w-full rounded-xl border p-4 text-left transition-all ${sel ? "border-cyan-400 bg-cyan-400/5 shadow-[0_0_20px_hsl(180_70%_50%/0.1)]" : "border-white/10 bg-white/[0.02] hover:border-white/20"}`}>
+                      <motion.button
+                        key={p.id}
+                        layout
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: sel ? 1.03 : 1, transition: { delay: i * 0.06, duration: 0.3 } }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setSelectedPlan(p.id)}
+                        className={`relative w-full rounded-xl border text-left transition-colors duration-300 ${sel ? "border-cyan-400 bg-cyan-400/5 shadow-[0_0_25px_hsl(180_70%_50%/0.15)] p-5" : "border-white/10 bg-white/[0.02] hover:border-white/20 p-4"}`}
+                      >
                         {p.badge && (
                           <span className="absolute -top-2.5 left-3 rounded-md px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest bg-cyan-400 text-[#0a0e17]">
                             {p.badge}
@@ -136,20 +146,28 @@ export default function AerospaceStyle({ onClose }: Props) {
                         )}
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className={`font-bold ${sel ? "text-white" : "text-white/70"}`}>{p.name}</p>
+                            <p className={`font-bold transition-all duration-300 ${sel ? "text-white text-base" : "text-white/70 text-sm"}`}>{p.name}</p>
                             {p.duration && <p className="text-xs text-white/30">{p.duration}</p>}
                           </div>
                           <div className="flex items-center gap-2">
-                            <p className={`text-sm font-mono ${sel ? "text-cyan-400" : "text-white/40"}`}>{p.price}</p>
-                            {sel && <div className="h-5 w-5 rounded-full bg-cyan-400 flex items-center justify-center"><Check className="h-3 w-3 text-[#0a0e17]" /></div>}
+                            <p className={`font-mono transition-all duration-300 ${sel ? "text-cyan-400 text-base font-bold" : "text-white/40 text-sm"}`}>{p.price}</p>
+                            <motion.div
+                              initial={false}
+                              animate={{ scale: sel ? 1 : 0, opacity: sel ? 1 : 0 }}
+                              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                              className="h-5 w-5 rounded-full bg-cyan-400 flex items-center justify-center"
+                            >
+                              <Check className="h-3 w-3 text-[#0a0e17]" />
+                            </motion.div>
                           </div>
                         </div>
-                      </button>
+                      </motion.button>
                     );
                   })}
+                  </AnimatePresence>
                 </div>
 
-                <p className="text-[10px] font-mono text-white/25 text-center mb-5 max-w-xs">{PLAN_DETAILS[selectedPlan]}</p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] font-mono text-white/25 text-center mb-5 max-w-xs">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
                 <button onClick={onClose} className="w-full group flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 py-3.5 font-bold text-sm text-[#0a0e17] transition-all hover:shadow-[0_0_30px_hsl(180_70%_50%/0.3)] active:scale-[0.98]">
                   Comenzar prueba de {trial} días
