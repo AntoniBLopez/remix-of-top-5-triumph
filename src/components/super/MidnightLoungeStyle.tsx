@@ -45,7 +45,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-5 py-4">
         <button onClick={onClose} className={`p-2 rounded-full transition-colors ${dark ? "hover:bg-white/5" : "hover:bg-black/5"}`}>
-          <X className={`h-4 w-4 ${dark ? "text-white/40" : "text-gray-400"}`} />
+          <X className={`h-4 w-4 ${dark ? "text-white/40" : "text-slate-700/60"}`} />
         </button>
         <div className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/10 border border-amber-400/20 px-3 py-1">
           <Crown className={`h-3 w-3 ${accentSolid}`} />
