@@ -186,7 +186,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   </AnimatePresence>
                 </div>
 
-                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] md:text-xs text-center mb-6 max-w-xs text-white/60">{PLAN_DETAILS[selectedPlan]}</motion.p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-xs md:text-sm text-center mb-6 max-w-xs md:max-w-sm text-white/60">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
                 <button onClick={onClose} className={`w-full rounded-2xl py-4 font-extrabold text-sm md:text-base transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
                   Comenzar prueba de {trial} días
