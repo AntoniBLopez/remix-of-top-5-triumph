@@ -61,28 +61,28 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.35 }}
-            className="w-full max-w-md flex flex-col items-center"
+            className="w-full max-w-md md:max-w-lg flex flex-col items-center"
           >
             {step === "compare" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-orange-400" />
-                  <span className="text-xs font-medium text-orange-300">Experiencia premium</span>
+                  <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-orange-400" />
+                  <span className="text-xs md:text-sm font-medium text-orange-300">Experiencia premium</span>
                 </div>
-                <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
+                <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-2 leading-tight">
                   Aprende sin límites
                 </h1>
-                <p className="text-sm mb-8 text-center text-white/60">Compara lo que obtienes con Super</p>
+                <p className="text-sm md:text-base mb-8 text-center text-white/60">Compara lo que obtienes con Super</p>
 
                 <div className="w-full rounded-2xl overflow-hidden mb-8 backdrop-blur-md border bg-white/[0.04] border-white/[0.06]">
-                  <div className="grid grid-cols-[1fr_60px_60px] items-center px-5 py-3.5 bg-white/[0.03]">
+                  <div className="grid grid-cols-[1fr_60px_60px] md:grid-cols-[1fr_80px_80px] items-center px-5 py-3.5 bg-white/[0.03]">
                     <span />
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-center text-white/50">Free</span>
-                    <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${accent}`}>Super</span>
+                    <span className="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-center text-white/50">Free</span>
+                    <span className={`text-[10px] md:text-xs font-semibold uppercase tracking-wider text-center ${accent}`}>Super</span>
                   </div>
                   {FEATURES.map((f, i) => (
-                    <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3 ${i < FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}`}>
-                      <span className="text-sm text-white/80">{f.name}</span>
+                    <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] md:grid-cols-[1fr_80px_80px] items-center px-5 py-3 md:py-4 ${i < FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}`}>
+                      <span className="text-sm md:text-base text-white/80">{f.name}</span>
                       <div className="flex justify-center">
                         {f.free ? <div className="h-5 w-5 rounded-full flex items-center justify-center bg-white/10"><Check className="h-3 w-3 text-white/40" /></div> : <span className="text-white/20">—</span>}
                       </div>
@@ -95,7 +95,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("reminder")} className={`w-full rounded-2xl py-4 font-extrabold text-sm transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
+                <button onClick={() => setStep("reminder")} className={`w-full rounded-2xl py-4 font-extrabold text-sm md:text-base transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
                   Comenzar 7 días gratis
                 </button>
               </>
@@ -104,32 +104,32 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             {step === "reminder" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Bell className={`h-4 w-4 ${accentSolid}`} />
-                  <span className={`text-xs font-medium ${accentSubtle}`}>Sin sorpresas</span>
+                  <Bell className={`h-4 w-4 md:h-5 md:w-5 ${accentSolid}`} />
+                  <span className={`text-xs md:text-sm font-medium ${accentSubtle}`}>Sin sorpresas</span>
                 </div>
-                <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
+                <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-2 leading-tight">
                   Te avisaremos a tiempo
                 </h1>
-                <p className="text-sm mb-8 text-center text-white/60">Cancela antes del día 7 sin costo alguno</p>
+                <p className="text-sm md:text-base mb-8 text-center text-white/60">Cancela antes del día 7 sin costo alguno</p>
 
                 <div className="w-full rounded-2xl p-6 mb-8 backdrop-blur-md border bg-white/[0.04] border-white/[0.06]">
                   {TIMELINE.map((t, i) => (
                     <div key={t.title} className="flex items-start gap-4">
                       <div className="flex flex-col items-center">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]">
-                          <t.icon className={`h-4 w-4 ${accentSolid}`} />
+                        <div className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]">
+                          <t.icon className={`h-4 w-4 md:h-5 md:w-5 ${accentSolid}`} />
                         </div>
                         {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 from-orange-400/15 to-transparent`} />}
                       </div>
                       <div className="pt-1.5 pb-3">
-                        <p className="text-sm font-bold">{t.title}</p>
-                        <p className="text-xs mt-0.5 text-white/60">{t.desc}</p>
+                        <p className="text-sm md:text-base font-bold">{t.title}</p>
+                        <p className="text-xs md:text-sm mt-0.5 text-white/60">{t.desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <button onClick={() => setStep("plans")} className={`w-full rounded-2xl py-4 font-extrabold text-sm transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
+                <button onClick={() => setStep("plans")} className={`w-full rounded-2xl py-4 font-extrabold text-sm md:text-base transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
                   Continuar
                 </button>
               </>
@@ -137,10 +137,10 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
             {step === "plans" && (
               <>
-                <h1 className="text-3xl font-extrabold text-center mb-1 leading-tight">
+                <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-1 leading-tight">
                   Elige tu plan
                 </h1>
-                <p className="text-sm mb-8 text-center text-white/40">Después de tu prueba de {trial} días</p>
+                <p className="text-sm md:text-base mb-8 text-center text-white/40">Después de tu prueba de {trial} días</p>
 
                 <div className="w-full space-y-3 mb-5">
                   <AnimatePresence mode="popLayout">
@@ -175,10 +175,10 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         </motion.div>
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className={`font-bold transition-all duration-300 ${sel ? "text-base" : "text-sm text-white/60"}`}>{p.name}</p>
-                             {p.duration && <p className="text-xs mt-0.5 text-white/50">{p.duration}</p>}
+                            <p className={`font-bold transition-all duration-300 ${sel ? "text-base md:text-lg" : "text-sm md:text-base text-white/60"}`}>{p.name}</p>
+                             {p.duration && <p className="text-xs md:text-sm mt-0.5 text-white/50">{p.duration}</p>}
                           </div>
-                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${accentText}` : "text-sm text-white/50"}`}>{p.price}</p>
+                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base md:text-lg ${accentText}` : "text-sm md:text-base text-white/50"}`}>{p.price}</p>
                         </div>
                       </motion.button>
                     );
@@ -186,9 +186,9 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   </AnimatePresence>
                 </div>
 
-                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-center mb-6 max-w-xs text-white/60">{PLAN_DETAILS[selectedPlan]}</motion.p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] md:text-xs text-center mb-6 max-w-xs text-white/60">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
-                <button onClick={onClose} className={`w-full rounded-2xl py-4 font-extrabold text-sm transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
+                <button onClick={onClose} className={`w-full rounded-2xl py-4 font-extrabold text-sm md:text-base transition-all active:scale-[0.98] ${dark ? "text-black bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "text-orange-500 bg-white shadow-[0_4px_24px_rgba(255,255,255,0.3)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.5)]"}`}>
                   Comenzar prueba de {trial} días
                 </button>
 
