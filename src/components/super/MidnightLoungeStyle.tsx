@@ -95,7 +95,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("reminder")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_4px_24px_hsl(25_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(25_90%_50%/0.4)]">
+                <button onClick={() => setStep("reminder")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
                   Comenzar 7 días gratis
                 </button>
               </>
@@ -129,7 +129,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("plans")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_4px_24px_hsl(25_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(25_90%_50%/0.4)]">
+                <button onClick={() => setStep("plans")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
                   Continuar
                 </button>
               </>
@@ -161,7 +161,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         }`}
                       >
                         {p.badge && (
-                          <span className="absolute -top-2.5 left-4 rounded-full bg-orange-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                          <span className="absolute -top-2.5 left-4 rounded-full bg-amber-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
                             {p.badge}
                           </span>
                         )}
@@ -169,7 +169,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                           initial={false}
                           animate={{ scale: sel ? 1 : 0, opacity: sel ? 1 : 0 }}
                           transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full flex items-center justify-center shadow-md bg-orange-500"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full flex items-center justify-center shadow-md bg-amber-500"
                         >
                           <Check className="h-3.5 w-3.5 text-white" />
                         </motion.div>
@@ -188,7 +188,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
                 <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-center mb-6 max-w-xs text-white/40">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
-                <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_4px_24px_hsl(25_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(25_90%_50%/0.4)]">
+                <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
                   Comenzar prueba de {trial} días
                 </button>
 
@@ -206,7 +206,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       {/* Dots */}
       <div className="relative z-10 flex items-center justify-center gap-2 pb-6">
         {(["compare", "reminder", "plans"] as Step[]).map((s) => (
-          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-orange-500" : "w-1.5 h-1.5 bg-white/10"}`} />
+          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-amber-500" : "w-1.5 h-1.5 bg-white/10"}`} />
         ))}
       </div>
     </div>
