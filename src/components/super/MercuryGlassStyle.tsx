@@ -126,7 +126,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                     return (
                       <button key={p.id} onClick={() => setSelectedPlan(p.id)} className={`relative w-full border p-4 text-left transition-all ${sel ? "border-white bg-white/[0.05]" : "border-white/[0.06] hover:border-white/15"}`}>
                         {p.badge && (
-                          <span className={`absolute -top-2.5 left-3 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${sel ? "bg-white text-black" : "bg-white/10 text-white/30"}`}>
+                          <span className="absolute -top-2.5 left-3 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest bg-white text-black">
                             {p.badge}
                           </span>
                         )}

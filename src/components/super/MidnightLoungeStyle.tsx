@@ -130,7 +130,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                     return (
                       <button key={p.id} onClick={() => setSelectedPlan(p.id)} className={`relative w-full rounded-2xl border-2 p-4 text-left transition-all ${sel ? "border-amber-400/60 bg-amber-400/[0.06] shadow-[0_0_20px_hsl(40_90%_50%/0.08)]" : "border-white/[0.06] bg-white/[0.02] hover:border-white/10"}`}>
                         {p.badge && (
-                          <span className={`absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${sel ? "bg-amber-400 text-[#1a1a2e]" : "bg-white/10 text-white/40"}`}>
+                          <span className="absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-amber-400 text-[#1a1a2e]">
                             {p.badge}
                           </span>
                         )}
