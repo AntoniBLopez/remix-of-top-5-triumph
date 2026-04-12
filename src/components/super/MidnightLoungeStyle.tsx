@@ -66,29 +66,29 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             {step === "compare" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Sparkles className={`h-4 w-4 ${accentSolid}`} />
-                  <span className={`text-xs font-medium ${accentSubtle}`}>Experiencia premium</span>
+                  <Sparkles className="h-4 w-4 text-amber-300" />
+                  <span className="text-xs font-medium text-amber-200/80">Experiencia premium</span>
                 </div>
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Aprende sin límites
                 </h1>
-                <p className="text-sm mb-8 text-center text-white/40">Compara lo que obtienes con Super</p>
+                <p className="text-sm mb-8 text-center text-white/60">Compara lo que obtienes con Super</p>
 
                 <div className="w-full rounded-2xl overflow-hidden mb-8 backdrop-blur-md border bg-white/[0.04] border-white/[0.06]">
                   <div className="grid grid-cols-[1fr_60px_60px] items-center px-5 py-3.5 bg-white/[0.03]">
                     <span />
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-center text-white/25">Free</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-center text-white/50">Free</span>
                     <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${accent}`}>Super</span>
                   </div>
                   {FEATURES.map((f, i) => (
                     <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3 ${i < FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}`}>
-                      <span className="text-sm text-white/60">{f.name}</span>
+                      <span className="text-sm text-white/80">{f.name}</span>
                       <div className="flex justify-center">
-                        {f.free ? <div className="h-5 w-5 rounded-full flex items-center justify-center bg-white/5"><Check className="h-3 w-3 text-white/20" /></div> : <span className="text-white/10">—</span>}
+                        {f.free ? <div className="h-5 w-5 rounded-full flex items-center justify-center bg-white/10"><Check className="h-3 w-3 text-white/40" /></div> : <span className="text-white/20">—</span>}
                       </div>
                       <div className="flex justify-center">
-                        <div className={`h-5 w-5 rounded-full flex items-center justify-center ${accentBgLight}`}>
-                          <Check className={`h-3 w-3 ${accentSolid}`} />
+                        <div className="h-5 w-5 rounded-full flex items-center justify-center bg-amber-400/25">
+                          <Check className="h-3 w-3 text-amber-400" />
                         </div>
                       </div>
                     </div>
