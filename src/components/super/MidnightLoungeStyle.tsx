@@ -66,8 +66,8 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             {step === "compare" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-amber-300" />
-                  <span className="text-xs font-medium text-amber-200/80">Experiencia premium</span>
+                  <Sparkles className="h-4 w-4 text-amber-500" />
+                  <span className="text-xs font-medium text-amber-400">Experiencia premium</span>
                 </div>
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Aprende sin límites
