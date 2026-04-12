@@ -35,7 +35,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-slate-900"}`}
       style={{ background: dark
         ? "linear-gradient(160deg, #0f1628 0%, #141e3a 30%, #0d2a3a 60%, #0a2420 100%)"
-        : "linear-gradient(160deg, #eef3fa 0%, #e8f0f8 30%, #e4f2f0 60%, #e8f5ee 100%)"
+        : "linear-gradient(160deg, #c8daf0 0%, #b8d4e8 30%, #b0d8d4 60%, #b8e0c8 100%)"
       }}
     >
       {/* Ambient blurs */}
