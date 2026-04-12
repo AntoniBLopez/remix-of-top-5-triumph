@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, PenLine, Sun, Moon, Flame, Gamepad2, Crown } from "lucide-react";
+import { BookOpen, PenLine, Sun, Moon, Flame, Gamepad2, Diamond } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import BottomNav from "@/components/BottomNav";
 import SuperUpgradeDialog from "@/components/SuperUpgradeDialog";
@@ -42,9 +42,9 @@ const HomePage = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSuper(true)}
-              className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-primary to-accent px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-md transition-all hover:scale-105 hover:shadow-lg active:scale-95"
+              className="flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground transition-all hover:text-foreground active:scale-95"
             >
-              <Crown className="h-3.5 w-3.5" />
+              <Diamond className="h-3 w-3" />
               Super
             </button>
             <div className="flex items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1">
