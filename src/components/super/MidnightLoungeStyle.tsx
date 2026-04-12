@@ -110,7 +110,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Te avisaremos a tiempo
                 </h1>
-                <p className="text-sm mb-8 text-center text-white/40">Cancela antes del día 7 sin costo alguno</p>
+                <p className="text-sm mb-8 text-center text-white/60">Cancela antes del día 7 sin costo alguno</p>
 
                 <div className="w-full rounded-2xl p-6 mb-8 backdrop-blur-md border bg-white/[0.04] border-white/[0.06]">
                   {TIMELINE.map((t, i) => (
@@ -123,7 +123,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                       </div>
                       <div className="pt-1.5 pb-3">
                         <p className="text-sm font-bold">{t.title}</p>
-                        <p className="text-xs mt-0.5 text-white/40">{t.desc}</p>
+                        <p className="text-xs mt-0.5 text-white/60">{t.desc}</p>
                       </div>
                     </div>
                   ))}
