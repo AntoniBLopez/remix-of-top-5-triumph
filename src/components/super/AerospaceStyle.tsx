@@ -130,7 +130,7 @@ export default function AerospaceStyle({ onClose }: Props) {
                     return (
                       <button key={p.id} onClick={() => setSelectedPlan(p.id)} className={`relative w-full rounded-xl border p-4 text-left transition-all ${sel ? "border-cyan-400 bg-cyan-400/5 shadow-[0_0_20px_hsl(180_70%_50%/0.1)]" : "border-white/10 bg-white/[0.02] hover:border-white/20"}`}>
                         {p.badge && (
-                          <span className={`absolute -top-2.5 left-3 rounded-md px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest ${sel ? "bg-cyan-400 text-[#0a0e17]" : "bg-white/10 text-white/50"}`}>
+                          <span className="absolute -top-2.5 left-3 rounded-md px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest bg-cyan-400 text-[#0a0e17]">
                             {p.badge}
                           </span>
                         )}
