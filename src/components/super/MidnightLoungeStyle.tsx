@@ -176,9 +176,9 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className={`font-bold transition-all duration-300 ${sel ? "text-base" : "text-sm text-white/60"}`}>{p.name}</p>
-                             {p.duration && <p className="text-xs mt-0.5 text-white/25">{p.duration}</p>}
+                             {p.duration && <p className="text-xs mt-0.5 text-white/50">{p.duration}</p>}
                           </div>
-                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${accentText}` : "text-sm text-white/30"}`}>{p.price}</p>
+                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${accentText}` : "text-sm text-white/50"}`}>{p.price}</p>
                         </div>
                       </motion.button>
                     );
@@ -186,14 +186,14 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   </AnimatePresence>
                 </div>
 
-                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-center mb-6 max-w-xs text-white/40">{PLAN_DETAILS[selectedPlan]}</motion.p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-center mb-6 max-w-xs text-white/60">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
                 <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
                   Comenzar prueba de {trial} días
                 </button>
 
                 {!showAll && (
-                  <button onClick={() => setShowAll(true)} className="mt-3 text-xs font-medium transition-colors text-white/25 hover:text-white/50">
+                  <button onClick={() => setShowAll(true)} className="mt-3 text-xs font-medium transition-colors text-white/40 hover:text-white/70">
                     Ver todos los planes
                   </button>
                 )}
