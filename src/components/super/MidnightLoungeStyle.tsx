@@ -32,10 +32,10 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
   return (
     <div
-      className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-amber-950"}`}
+      className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-slate-900"}`}
       style={{ background: dark
         ? "linear-gradient(160deg, #0f1628 0%, #141e3a 30%, #0d2a3a 60%, #0a2420 100%)"
-        : "linear-gradient(160deg, #eef3fa 0%, #e8f0f8 30%, #e4f2f0 60%, #e8f5ee 100%)"
+        : "linear-gradient(160deg, #c8daf0 0%, #b8d4e8 30%, #b0d8d4 60%, #b8e0c8 100%)"
       }}
     >
       {/* Ambient blurs */}
@@ -45,7 +45,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-5 py-4">
         <button onClick={onClose} className={`p-2 rounded-full transition-colors ${dark ? "hover:bg-white/5" : "hover:bg-black/5"}`}>
-          <X className={`h-4 w-4 ${dark ? "text-white/40" : "text-gray-400"}`} />
+          <X className={`h-4 w-4 ${dark ? "text-white/40" : "text-slate-700/60"}`} />
         </button>
         <div className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/10 border border-amber-400/20 px-3 py-1">
           <Crown className={`h-3 w-3 ${accentSolid}`} />
@@ -72,19 +72,19 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Aprende sin límites
                 </h1>
-                <p className={`text-sm mb-8 text-center ${dark ? "text-white/40" : "text-amber-900/50"}`}>Compara lo que obtienes con Super</p>
+                <p className={`text-sm mb-8 text-center ${dark ? "text-white/40" : "text-slate-700/50"}`}>Compara lo que obtienes con Super</p>
 
-                <div className={`w-full rounded-2xl overflow-hidden mb-8 backdrop-blur-md border ${dark ? "bg-white/[0.04] border-white/[0.06]" : "bg-white/70 border-amber-200/40"}`}>
-                  <div className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3.5 ${dark ? "bg-white/[0.03]" : "bg-amber-50/50"}`}>
+                <div className={`w-full rounded-2xl overflow-hidden mb-8 backdrop-blur-md border ${dark ? "bg-white/[0.04] border-white/[0.06]" : "bg-white/20 border-white/30"}`}>
+                  <div className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3.5 ${dark ? "bg-white/[0.03]" : "bg-white/15"}`}>
                     <span />
-                    <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${dark ? "text-white/25" : "text-amber-900/30"}`}>Free</span>
+                    <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${dark ? "text-white/25" : "text-slate-700/35"}`}>Free</span>
                     <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${accent}`}>Super</span>
                   </div>
                   {FEATURES.map((f, i) => (
-                    <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3 ${i < FEATURES.length - 1 ? `border-b ${dark ? "border-white/[0.04]" : "border-amber-200/30"}` : ""}`}>
-                      <span className={`text-sm ${dark ? "text-white/60" : "text-amber-900/70"}`}>{f.name}</span>
+                    <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3 ${i < FEATURES.length - 1 ? `border-b ${dark ? "border-white/[0.04]" : "border-white/20"}` : ""}`}>
+                      <span className={`text-sm ${dark ? "text-white/60" : "text-slate-700/70"}`}>{f.name}</span>
                       <div className="flex justify-center">
-                        {f.free ? <div className={`h-5 w-5 rounded-full flex items-center justify-center ${dark ? "bg-white/5" : "bg-amber-100/50"}`}><Check className={`h-3 w-3 ${dark ? "text-white/20" : "text-amber-300"}`} /></div> : <span className={dark ? "text-white/10" : "text-amber-200"}>—</span>}
+                        {f.free ? <div className={`h-5 w-5 rounded-full flex items-center justify-center ${dark ? "bg-white/5" : "bg-white/25"}`}><Check className={`h-3 w-3 ${dark ? "text-white/20" : "text-slate-500/40"}`} /></div> : <span className={dark ? "text-white/10" : "text-slate-400/30"}>—</span>}
                       </div>
                       <div className="flex justify-center">
                         <div className={`h-5 w-5 rounded-full flex items-center justify-center ${accentBgLight}`}>
@@ -110,20 +110,20 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Te avisaremos a tiempo
                 </h1>
-                <p className={`text-sm mb-8 text-center ${dark ? "text-white/40" : "text-amber-900/50"}`}>Cancela antes del día 7 sin costo alguno</p>
+                <p className={`text-sm mb-8 text-center ${dark ? "text-white/40" : "text-slate-700/50"}`}>Cancela antes del día 7 sin costo alguno</p>
 
-                <div className={`w-full rounded-2xl p-6 mb-8 backdrop-blur-md border ${dark ? "bg-white/[0.04] border-white/[0.06]" : "bg-white/70 border-amber-200/40"}`}>
+                <div className={`w-full rounded-2xl p-6 mb-8 backdrop-blur-md border ${dark ? "bg-white/[0.04] border-white/[0.06]" : "bg-white/20 border-white/30"}`}>
                   {TIMELINE.map((t, i) => (
                     <div key={t.title} className="flex items-start gap-4">
                       <div className="flex flex-col items-center">
-                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${dark ? "bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]" : "bg-gradient-to-br from-amber-100/50 to-white border-amber-200/40"}`}>
+                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${dark ? "bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]" : "bg-gradient-to-br from-white/30 to-white/10 border-white/30"}`}>
                           <t.icon className={`h-4 w-4 ${accentSolid}`} />
                         </div>
                         {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 from-amber-400/15 to-transparent`} />}
                       </div>
                       <div className="pt-1.5 pb-3">
                         <p className="text-sm font-bold">{t.title}</p>
-                        <p className={`text-xs mt-0.5 ${dark ? "text-white/40" : "text-amber-900/50"}`}>{t.desc}</p>
+                        <p className={`text-xs mt-0.5 ${dark ? "text-white/40" : "text-slate-700/50"}`}>{t.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -140,7 +140,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                 <h1 className="text-3xl font-extrabold text-center mb-1 leading-tight">
                   Elige tu plan
                 </h1>
-                <p className={`text-sm mb-8 text-center ${dark ? "text-white/40" : "text-amber-900/50"}`}>Después de tu prueba de {trial} días</p>
+                <p className={`text-sm mb-8 text-center ${dark ? "text-white/40" : "text-slate-700/50"}`}>Después de tu prueba de {trial} días</p>
 
                 <div className="w-full space-y-3 mb-5">
                   <AnimatePresence mode="popLayout">
@@ -159,7 +159,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                           ? "border-amber-400/60 bg-amber-400/[0.06] shadow-[0_0_25px_hsl(40_90%_50%/0.12)] p-5"
                           : dark
                             ? "border-white/[0.06] bg-white/[0.02] hover:border-white/10 p-4"
-                            : "border-amber-200/40 bg-white/60 hover:border-amber-300/50 p-4"
+                            : "border-white/20 bg-white/15 hover:border-white/35 p-4"
                         }`}
                       >
                         {p.badge && (
@@ -177,10 +177,10 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         </motion.div>
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className={`font-bold transition-all duration-300 ${sel ? "text-base" : `text-sm ${dark ? "text-white/60" : "text-amber-900/50"}`}`}>{p.name}</p>
-                             {p.duration && <p className={`text-xs mt-0.5 ${dark ? "text-white/25" : "text-amber-900/30"}`}>{p.duration}</p>}
+                            <p className={`font-bold transition-all duration-300 ${sel ? "text-base" : `text-sm ${dark ? "text-white/60" : "text-slate-700/60"}`}`}>{p.name}</p>
+                             {p.duration && <p className={`text-xs mt-0.5 ${dark ? "text-white/25" : "text-slate-600/40"}`}>{p.duration}</p>}
                           </div>
-                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${accentText}` : `text-sm ${dark ? "text-white/30" : "text-amber-900/40"}`}`}>{p.price}</p>
+                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${accentText}` : `text-sm ${dark ? "text-white/30" : "text-slate-600/40"}`}`}>{p.price}</p>
                         </div>
                       </motion.button>
                     );
@@ -188,14 +188,14 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   </AnimatePresence>
                 </div>
 
-                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className={`text-[10px] text-center mb-6 max-w-xs ${dark ? "text-white/40" : "text-amber-900/50"}`}>{PLAN_DETAILS[selectedPlan]}</motion.p>
+                <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className={`text-[10px] text-center mb-6 max-w-xs ${dark ? "text-white/40" : "text-slate-700/50"}`}>{PLAN_DETAILS[selectedPlan]}</motion.p>
 
                 <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-white transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
                   Comenzar prueba de {trial} días
                 </button>
 
                 {!showAll && (
-                  <button onClick={() => setShowAll(true)} className={`mt-3 text-xs font-medium transition-colors ${dark ? "text-white/25 hover:text-white/50" : "text-amber-900/30 hover:text-amber-900/60"}`}>
+                  <button onClick={() => setShowAll(true)} className={`mt-3 text-xs font-medium transition-colors ${dark ? "text-white/25 hover:text-white/50" : "text-slate-700/35 hover:text-slate-700/60"}`}>
                     Ver todos los planes
                   </button>
                 )}
@@ -208,7 +208,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       {/* Dots */}
       <div className="relative z-10 flex items-center justify-center gap-2 pb-6">
         {(["compare", "reminder", "plans"] as Step[]).map((s) => (
-          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-amber-500" : `w-1.5 h-1.5 ${dark ? "bg-white/10" : "bg-amber-900/10"}`}`} />
+          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-amber-500" : `w-1.5 h-1.5 ${dark ? "bg-white/10" : "bg-white/25"}`}`} />
         ))}
       </div>
     </div>
