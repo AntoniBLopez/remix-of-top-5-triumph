@@ -95,7 +95,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("reminder")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
+                <button onClick={() => setStep("reminder")} className={`w-full rounded-2xl py-4 font-extrabold text-sm ${dark ? "text-black" : "text-white"} transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]`}>
                   Comenzar 7 días gratis
                 </button>
               </>
@@ -129,7 +129,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("plans")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
+                <button onClick={() => setStep("plans")} className={`w-full rounded-2xl py-4 font-extrabold text-sm ${dark ? "text-black" : "text-white"} transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]`}>
                   Continuar
                 </button>
               </>
@@ -188,7 +188,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
                 <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-center mb-6 max-w-xs text-white/60">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
-                <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
+                <button onClick={onClose} className={`w-full rounded-2xl py-4 font-extrabold text-sm ${dark ? "text-black" : "text-white"} transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]`}>
                   Comenzar prueba de {trial} días
                 </button>
 
