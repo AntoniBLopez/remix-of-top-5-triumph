@@ -22,13 +22,13 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
   const trial = TRIAL_DAYS[selectedPlan];
 
   // Amber accents in both modes
-  const accent = "text-amber-400";
-  const accentSolid = "text-amber-500";
-  const accentBg = "bg-amber-400";
-  const accentBgLight = "bg-amber-400/15";
-  const accentBorder = "border-amber-400";
-  const accentText = "text-amber-300";
-  const accentSubtle = "text-amber-300/70";
+  const accent = "text-orange-400";
+  const accentSolid = "text-orange-400";
+  const accentBg = "bg-orange-400";
+  const accentBgLight = "bg-orange-400/15";
+  const accentBorder = "border-orange-400";
+  const accentText = "text-orange-300";
+  const accentSubtle = "text-orange-300/70";
 
   return (
     <div
@@ -47,7 +47,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
         <button onClick={onClose} className="p-2 rounded-full transition-colors hover:bg-white/5">
           <X className="h-4 w-4 text-white/40" />
         </button>
-        <div className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/10 border border-amber-400/20 px-3 py-1">
+        <div className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-400/20 to-orange-500/10 border border-orange-400/20 px-3 py-1">
           <Crown className={`h-3 w-3 ${accentSolid}`} />
           <span className={`text-[10px] font-bold uppercase tracking-wider ${accentText}`}>Super</span>
         </div>
@@ -66,8 +66,8 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             {step === "compare" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-amber-500" />
-                  <span className="text-xs font-medium text-amber-400">Experiencia premium</span>
+                  <Sparkles className="h-4 w-4 text-orange-400" />
+                  <span className="text-xs font-medium text-orange-300">Experiencia premium</span>
                 </div>
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Aprende sin límites
@@ -87,15 +87,15 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         {f.free ? <div className="h-5 w-5 rounded-full flex items-center justify-center bg-white/10"><Check className="h-3 w-3 text-white/40" /></div> : <span className="text-white/20">—</span>}
                       </div>
                       <div className="flex justify-center">
-                        <div className="h-5 w-5 rounded-full flex items-center justify-center bg-amber-400/25">
-                          <Check className="h-3 w-3 text-amber-400" />
+                        <div className="h-5 w-5 rounded-full flex items-center justify-center bg-orange-400/25">
+                          <Check className="h-3 w-3 text-orange-400" />
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <button onClick={() => setStep("reminder")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
+                <button onClick={() => setStep("reminder")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_4px_24px_hsl(25_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(25_90%_50%/0.4)]">
                   Comenzar 7 días gratis
                 </button>
               </>
@@ -119,7 +119,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]">
                           <t.icon className={`h-4 w-4 ${accentSolid}`} />
                         </div>
-                        {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 from-amber-400/15 to-transparent`} />}
+                        {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 from-orange-400/15 to-transparent`} />}
                       </div>
                       <div className="pt-1.5 pb-3">
                         <p className="text-sm font-bold">{t.title}</p>
@@ -129,7 +129,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("plans")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
+                <button onClick={() => setStep("plans")} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_4px_24px_hsl(25_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(25_90%_50%/0.4)]">
                   Continuar
                 </button>
               </>
@@ -156,12 +156,12 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setSelectedPlan(p.id)}
                         className={`relative w-full rounded-2xl border-2 text-left transition-colors duration-300 ${sel
-                          ? "border-amber-400/60 bg-amber-400/[0.06] shadow-[0_0_25px_hsl(40_90%_50%/0.12)] p-5"
+                          ? "border-orange-400/60 bg-orange-400/[0.06] shadow-[0_0_25px_hsl(25_90%_50%/0.12)] p-5"
                           : "border-white/[0.06] bg-white/[0.02] hover:border-white/10 p-4"
                         }`}
                       >
                         {p.badge && (
-                          <span className="absolute -top-2.5 left-4 rounded-full bg-amber-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                          <span className="absolute -top-2.5 left-4 rounded-full bg-orange-500 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
                             {p.badge}
                           </span>
                         )}
@@ -169,7 +169,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                           initial={false}
                           animate={{ scale: sel ? 1 : 0, opacity: sel ? 1 : 0 }}
                           transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full flex items-center justify-center shadow-md bg-amber-500"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full flex items-center justify-center shadow-md bg-orange-500"
                         >
                           <Check className="h-3.5 w-3.5 text-white" />
                         </motion.div>
@@ -188,7 +188,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
                 <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-center mb-6 max-w-xs text-white/40">{PLAN_DETAILS[selectedPlan]}</motion.p>
 
-                <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]">
+                <button onClick={onClose} className="w-full rounded-2xl py-4 font-extrabold text-sm text-black transition-all active:scale-[0.98] bg-gradient-to-r from-orange-400 to-orange-500 shadow-[0_4px_24px_hsl(25_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(25_90%_50%/0.4)]">
                   Comenzar prueba de {trial} días
                 </button>
 
@@ -206,7 +206,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       {/* Dots */}
       <div className="relative z-10 flex items-center justify-center gap-2 pb-6">
         {(["compare", "reminder", "plans"] as Step[]).map((s) => (
-          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-amber-500" : "w-1.5 h-1.5 bg-white/10"}`} />
+          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-orange-500" : "w-1.5 h-1.5 bg-white/10"}`} />
         ))}
       </div>
     </div>
