@@ -84,7 +84,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                     <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3 ${i < FEATURES.length - 1 ? `border-b ${dark ? "border-white/[0.04]" : "border-white/20"}` : ""}`}>
                       <span className={`text-sm ${dark ? "text-white/60" : "text-slate-600"}`}>{f.name}</span>
                       <div className="flex justify-center">
-                        {f.free ? <div className={`h-5 w-5 rounded-full flex items-center justify-center ${dark ? "bg-white/5" : "bg-white/25"}`}><Check className={`h-3 w-3 ${dark ? "text-white/20" : "text-slate-500/40"}`} /></div> : <span className={dark ? "text-white/10" : "text-slate-400/30"}>—</span>}
+                        {f.free ? <div className={`h-5 w-5 rounded-full flex items-center justify-center ${dark ? "bg-white/5" : "bg-white/25"}`}><Check className={`h-3 w-3 ${dark ? "text-white/20" : "text-slate-500"}`} /></div> : <span className={dark ? "text-white/10" : "text-slate-400"}>—</span>}
                       </div>
                       <div className="flex justify-center">
                         <div className={`h-5 w-5 rounded-full flex items-center justify-center ${accentBgLight}`}>
