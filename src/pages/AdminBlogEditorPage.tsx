@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, Eye } from "lucide-react";
+import MarkdownHelpDialog from "@/components/blog/MarkdownHelpDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -216,12 +217,15 @@ export default function AdminBlogEditorPage() {
 
             {/* Content with preview */}
             <Tabs defaultValue="write" className="w-full">
-              <TabsList>
-                <TabsTrigger value="write">Escribir</TabsTrigger>
-                <TabsTrigger value="preview" className="gap-1">
-                  <Eye className="h-3.5 w-3.5" /> Preview
-                </TabsTrigger>
-              </TabsList>
+              <div className="flex items-center justify-between">
+                <TabsList>
+                  <TabsTrigger value="write">Escribir</TabsTrigger>
+                  <TabsTrigger value="preview" className="gap-1">
+                    <Eye className="h-3.5 w-3.5" /> Preview
+                  </TabsTrigger>
+                </TabsList>
+                <MarkdownHelpDialog />
+              </div>
               <TabsContent value="write">
                 <Textarea
                   value={content}
