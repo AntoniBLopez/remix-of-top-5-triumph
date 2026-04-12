@@ -21,26 +21,35 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
   const plans = showAll ? ALL_PLANS : ALL_PLANS.slice(0, 2);
   const trial = TRIAL_DAYS[selectedPlan];
 
+  // Light mode uses primary (teal), dark mode uses amber
+  const accent = dark ? "text-amber-400" : "text-primary";
+  const accentSolid = dark ? "text-amber-500" : "text-primary";
+  const accentBg = dark ? "bg-amber-400" : "bg-primary";
+  const accentBgLight = dark ? "bg-amber-400/15" : "bg-primary/10";
+  const accentBorder = dark ? "border-amber-400" : "border-primary";
+  const accentText = dark ? "text-amber-300" : "text-primary";
+  const accentSubtle = dark ? "text-amber-300/70" : "text-primary/70";
+
   return (
     <div
       className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-gray-900"}`}
       style={{ background: dark
         ? "linear-gradient(160deg, #0f1628 0%, #141e3a 30%, #0d2a3a 60%, #0a2420 100%)"
-        : "linear-gradient(160deg, #f8f6f0 0%, #f0ece0 30%, #eef3f0 60%, #f5f0e8 100%)"
+        : "linear-gradient(160deg, #f8fafb 0%, #f0f5f3 30%, #eef6f4 60%, #f5faf8 100%)"
       }}
     >
       {/* Ambient blurs */}
-      <div className={`pointer-events-none absolute top-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(200_80%_40%/0.08),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(40_80%_60%/0.12),transparent_60%)]"}`} />
-      <div className={`pointer-events-none absolute bottom-[-100px] left-[-50px] w-[300px] h-[300px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(160_70%_40%/0.06),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(40_70%_55%/0.08),transparent_60%)]"}`} />
+      <div className={`pointer-events-none absolute top-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(200_80%_40%/0.08),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(162_63%_41%/0.08),transparent_60%)]"}`} />
+      <div className={`pointer-events-none absolute bottom-[-100px] left-[-50px] w-[300px] h-[300px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(160_70%_40%/0.06),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(162_63%_41%/0.05),transparent_60%)]"}`} />
 
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-5 py-4">
         <button onClick={onClose} className={`p-2 rounded-full transition-colors ${dark ? "hover:bg-white/5" : "hover:bg-black/5"}`}>
           <X className={`h-4 w-4 ${dark ? "text-white/40" : "text-gray-400"}`} />
         </button>
-        <div className={`flex items-center gap-1.5 rounded-full bg-gradient-to-r border px-3 py-1 ${dark ? "from-amber-400/20 to-amber-500/10 border-amber-400/20" : "from-amber-500/15 to-amber-400/10 border-amber-500/25"}`}>
-          <Crown className="h-3 w-3 text-amber-500" />
-          <span className={`text-[10px] font-bold uppercase tracking-wider ${dark ? "text-amber-300" : "text-amber-600"}`}>Super</span>
+        <div className={`flex items-center gap-1.5 rounded-full bg-gradient-to-r border px-3 py-1 ${dark ? "from-amber-400/20 to-amber-500/10 border-amber-400/20" : "from-primary/15 to-primary/5 border-primary/20"}`}>
+          <Crown className={`h-3 w-3 ${accentSolid}`} />
+          <span className={`text-[10px] font-bold uppercase tracking-wider ${accentText}`}>Super</span>
         </div>
       </div>
 
@@ -57,8 +66,8 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             {step === "compare" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-amber-500" />
-                  <span className={`text-xs font-medium ${dark ? "text-amber-300/70" : "text-amber-600/70"}`}>Experiencia premium</span>
+                  <Sparkles className={`h-4 w-4 ${accentSolid}`} />
+                  <span className={`text-xs font-medium ${accentSubtle}`}>Experiencia premium</span>
                 </div>
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Aprende sin límites
@@ -69,7 +78,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   <div className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3.5 ${dark ? "bg-white/[0.03]" : "bg-black/[0.02]"}`}>
                     <span />
                     <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${dark ? "text-white/25" : "text-gray-400"}`}>Free</span>
-                    <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${dark ? "text-amber-400/80" : "text-amber-600"}`}>Super</span>
+                    <span className={`text-[10px] font-semibold uppercase tracking-wider text-center ${accent}`}>Super</span>
                   </div>
                   {FEATURES.map((f, i) => (
                     <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] items-center px-5 py-3 ${i < FEATURES.length - 1 ? `border-b ${dark ? "border-white/[0.04]" : "border-black/[0.04]"}` : ""}`}>
@@ -78,15 +87,15 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         {f.free ? <div className={`h-5 w-5 rounded-full flex items-center justify-center ${dark ? "bg-white/5" : "bg-black/5"}`}><Check className={`h-3 w-3 ${dark ? "text-white/20" : "text-gray-300"}`} /></div> : <span className={dark ? "text-white/10" : "text-gray-200"}>—</span>}
                       </div>
                       <div className="flex justify-center">
-                        <div className={`h-5 w-5 rounded-full flex items-center justify-center ${dark ? "bg-amber-400/15" : "bg-amber-100"}`}>
-                          <Check className="h-3 w-3 text-amber-500" />
+                        <div className={`h-5 w-5 rounded-full flex items-center justify-center ${accentBgLight}`}>
+                          <Check className={`h-3 w-3 ${accentSolid}`} />
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <button onClick={() => setStep("reminder")} className="w-full rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 py-4 font-extrabold text-sm text-white shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] transition-all hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)] active:scale-[0.98]">
+                <button onClick={() => setStep("reminder")} className={`w-full rounded-2xl py-4 font-extrabold text-sm text-white transition-all active:scale-[0.98] ${dark ? "bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "bg-gradient-to-r from-primary to-primary/80 shadow-[0_4px_24px_hsl(162_63%_41%/0.25)] hover:shadow-[0_4px_32px_hsl(162_63%_41%/0.4)]"}`}>
                   Comenzar 7 días gratis
                 </button>
               </>
@@ -95,8 +104,8 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
             {step === "reminder" && (
               <>
                 <div className="mb-1 flex items-center gap-2">
-                  <Bell className="h-4 w-4 text-amber-500" />
-                  <span className={`text-xs font-medium ${dark ? "text-amber-300/70" : "text-amber-600/70"}`}>Sin sorpresas</span>
+                  <Bell className={`h-4 w-4 ${accentSolid}`} />
+                  <span className={`text-xs font-medium ${accentSubtle}`}>Sin sorpresas</span>
                 </div>
                 <h1 className="text-3xl font-extrabold text-center mb-2 leading-tight">
                   Te avisaremos a tiempo
@@ -107,10 +116,10 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   {TIMELINE.map((t, i) => (
                     <div key={t.title} className="flex items-start gap-4">
                       <div className="flex flex-col items-center">
-                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${dark ? "bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]" : "bg-gradient-to-br from-amber-50 to-white border-amber-200/30"}`}>
-                          <t.icon className="h-4 w-4 text-amber-500" />
+                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${dark ? "bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]" : "bg-gradient-to-br from-primary/5 to-white border-primary/15"}`}>
+                          <t.icon className={`h-4 w-4 ${accentSolid}`} />
                         </div>
-                        {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 ${dark ? "from-amber-400/15 to-transparent" : "from-amber-300/30 to-transparent"}`} />}
+                        {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 ${dark ? "from-amber-400/15 to-transparent" : "from-primary/20 to-transparent"}`} />}
                       </div>
                       <div className="pt-1.5 pb-3">
                         <p className="text-sm font-bold">{t.title}</p>
@@ -120,7 +129,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                   ))}
                 </div>
 
-                <button onClick={() => setStep("plans")} className="w-full rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 py-4 font-extrabold text-sm text-white shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] transition-all hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)] active:scale-[0.98]">
+                <button onClick={() => setStep("plans")} className={`w-full rounded-2xl py-4 font-extrabold text-sm text-white transition-all active:scale-[0.98] ${dark ? "bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "bg-gradient-to-r from-primary to-primary/80 shadow-[0_4px_24px_hsl(162_63%_41%/0.25)] hover:shadow-[0_4px_32px_hsl(162_63%_41%/0.4)]"}`}>
                   Continuar
                 </button>
               </>
@@ -149,14 +158,14 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         className={`relative w-full rounded-2xl border-2 text-left transition-colors duration-300 ${sel
                           ? dark
                             ? "border-amber-400/60 bg-amber-400/[0.06] shadow-[0_0_25px_hsl(40_90%_50%/0.12)] p-5"
-                            : "border-amber-400 bg-amber-50/80 shadow-[0_0_25px_hsl(40_90%_50%/0.12)] p-5"
+                            : "border-primary bg-primary/5 shadow-[0_0_25px_hsl(162_63%_41%/0.1)] p-5"
                           : dark
                             ? "border-white/[0.06] bg-white/[0.02] hover:border-white/10 p-4"
                             : "border-black/[0.06] bg-white/60 hover:border-black/10 p-4"
                         }`}
                       >
                         {p.badge && (
-                          <span className="absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white">
+                          <span className={`absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white ${dark ? "bg-amber-500" : "bg-primary"}`}>
                             {p.badge}
                           </span>
                         )}
@@ -164,7 +173,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                           initial={false}
                           animate={{ scale: sel ? 1 : 0, opacity: sel ? 1 : 0 }}
                           transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-amber-500 flex items-center justify-center shadow-md"
+                          className={`absolute -top-2 -right-2 h-6 w-6 rounded-full flex items-center justify-center shadow-md ${dark ? "bg-amber-500" : "bg-primary"}`}
                         >
                           <Check className="h-3.5 w-3.5 text-white" />
                         </motion.div>
@@ -173,7 +182,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                             <p className={`font-bold transition-all duration-300 ${sel ? "text-base" : `text-sm ${dark ? "text-white/60" : "text-gray-500"}`}`}>{p.name}</p>
                             {p.duration && <p className={`text-xs mt-0.5 ${dark ? "text-white/25" : "text-gray-400"}`}>{p.duration}</p>}
                           </div>
-                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${dark ? "text-amber-300" : "text-amber-600"}` : `text-sm ${dark ? "text-white/30" : "text-gray-400"}`}`}>{p.price}</p>
+                          <p className={`font-bold transition-all duration-300 ${sel ? `text-base ${accentText}` : `text-sm ${dark ? "text-white/30" : "text-gray-400"}`}`}>{p.price}</p>
                         </div>
                       </motion.button>
                     );
@@ -183,7 +192,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
                 <motion.p key={selectedPlan} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className={`text-[10px] text-center mb-6 max-w-xs ${dark ? "text-white/40" : "text-gray-400"}`}>{PLAN_DETAILS[selectedPlan]}</motion.p>
 
-                <button onClick={onClose} className="w-full rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 py-4 font-extrabold text-sm text-white shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] transition-all hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)] active:scale-[0.98]">
+                <button onClick={onClose} className={`w-full rounded-2xl py-4 font-extrabold text-sm text-white transition-all active:scale-[0.98] ${dark ? "bg-gradient-to-r from-amber-400 to-amber-500 shadow-[0_4px_24px_hsl(40_90%_50%/0.25)] hover:shadow-[0_4px_32px_hsl(40_90%_50%/0.4)]" : "bg-gradient-to-r from-primary to-primary/80 shadow-[0_4px_24px_hsl(162_63%_41%/0.25)] hover:shadow-[0_4px_32px_hsl(162_63%_41%/0.4)]"}`}>
                   Comenzar prueba de {trial} días
                 </button>
 
@@ -201,7 +210,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       {/* Dots */}
       <div className="relative z-10 flex items-center justify-center gap-2 pb-6">
         {(["compare", "reminder", "plans"] as Step[]).map((s) => (
-          <div key={s} className={`rounded-full transition-all ${step === s ? "w-6 h-1.5 bg-amber-500" : `w-1.5 h-1.5 ${dark ? "bg-white/10" : "bg-black/10"}`}`} />
+          <div key={s} className={`rounded-full transition-all ${step === s ? `w-6 h-1.5 ${dark ? "bg-amber-500" : "bg-primary"}` : `w-1.5 h-1.5 ${dark ? "bg-white/10" : "bg-black/10"}`}`} />
         ))}
       </div>
     </div>
