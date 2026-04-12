@@ -22,13 +22,13 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
   const trial = TRIAL_DAYS[selectedPlan];
 
   // Amber accents in both modes
-  const accent = "text-amber-400";
-  const accentSolid = "text-amber-500";
+  const accent = dark ? "text-amber-400" : "text-amber-600";
+  const accentSolid = dark ? "text-amber-500" : "text-amber-700";
   const accentBg = "bg-amber-400";
-  const accentBgLight = "bg-amber-400/15";
+  const accentBgLight = dark ? "bg-amber-400/15" : "bg-amber-500/20";
   const accentBorder = "border-amber-400";
-  const accentText = dark ? "text-amber-300" : "text-amber-600";
-  const accentSubtle = dark ? "text-amber-300/70" : "text-amber-600/80";
+  const accentText = dark ? "text-amber-300" : "text-amber-700";
+  const accentSubtle = dark ? "text-amber-300/70" : "text-amber-700/90";
 
   return (
     <div
