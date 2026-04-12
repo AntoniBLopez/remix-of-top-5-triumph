@@ -133,7 +133,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className={`font-bold ${sel ? "text-white" : "text-white/40"}`}>{p.name}</p>
-                            {p.duration && <p className="text-xs text-white/15 mt-0.5">{p.duration}</p>}
+                            {p.duration && <p className="text-xs text-white/50 mt-0.5">{p.duration}</p>}
                           </div>
                           <div className="flex items-center gap-3">
                             <p className={`text-sm font-bold ${sel ? "text-white" : "text-white/20"}`}>{p.price}</p>
@@ -147,7 +147,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                   })}
                 </div>
 
-                <p className="text-[9px] text-white/15 text-center mb-6 max-w-xs uppercase tracking-wider">{PLAN_DETAILS[selectedPlan]}</p>
+                <p className="text-[10px] text-white/50 text-center mb-6 max-w-xs uppercase tracking-wider">{PLAN_DETAILS[selectedPlan]}</p>
 
                 <button onClick={onClose} className="w-full group flex items-center justify-between rounded-none border border-white/20 bg-white text-black py-4 px-6 font-black text-sm uppercase tracking-wider transition-all hover:bg-white/90 active:scale-[0.98]">
                   <span>Comenzar · {trial} días gratis</span>
@@ -155,7 +155,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                 </button>
 
                 {!showAll && (
-                  <button onClick={() => setShowAll(true)} className="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/15 hover:text-white/40 transition-colors">
+                  <button onClick={() => setShowAll(true)} className="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 hover:text-white/60 transition-colors">
                     Todos los planes
                   </button>
                 )}
