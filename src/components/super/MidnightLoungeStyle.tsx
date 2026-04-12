@@ -119,7 +119,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br from-white/[0.08] to-white/[0.02] border-white/[0.08]">
                           <t.icon className={`h-4 w-4 ${accentSolid}`} />
                         </div>
-                        {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 from-amber-400/15 to-transparent`} />}
+                        {i < TIMELINE.length - 1 && <div className={`w-px flex-1 min-h-[28px] bg-gradient-to-b my-1.5 from-orange-400/15 to-transparent`} />}
                       </div>
                       <div className="pt-1.5 pb-3">
                         <p className="text-sm font-bold">{t.title}</p>
