@@ -32,7 +32,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
 
   return (
     <div
-      className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-amber-950"}`}
+      className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-slate-900"}`}
       style={{ background: dark
         ? "linear-gradient(160deg, #0f1628 0%, #141e3a 30%, #0d2a3a 60%, #0a2420 100%)"
         : "linear-gradient(160deg, #eef3fa 0%, #e8f0f8 30%, #e4f2f0 60%, #e8f5ee 100%)"
