@@ -35,12 +35,12 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       className={`min-h-full w-full flex flex-col relative overflow-hidden ${dark ? "text-white" : "text-amber-950"}`}
       style={{ background: dark
         ? "linear-gradient(160deg, #0f1628 0%, #141e3a 30%, #0d2a3a 60%, #0a2420 100%)"
-        : "linear-gradient(160deg, #faf8f5 0%, #f5f0e8 30%, #f6f2eb 60%, #faf7f2 100%)"
+        : "linear-gradient(160deg, #eef3fa 0%, #e8f0f8 30%, #e4f2f0 60%, #e8f5ee 100%)"
       }}
     >
       {/* Ambient blurs */}
-      <div className={`pointer-events-none absolute top-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(200_80%_40%/0.08),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(40_90%_50%/0.08),transparent_60%)]"}`} />
-      <div className={`pointer-events-none absolute bottom-[-100px] left-[-50px] w-[300px] h-[300px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(160_70%_40%/0.06),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(40_80%_50%/0.06),transparent_60%)]"}`} />
+      <div className={`pointer-events-none absolute top-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(200_80%_40%/0.08),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(200_70%_60%/0.12),transparent_60%)]"}`} />
+      <div className={`pointer-events-none absolute bottom-[-100px] left-[-50px] w-[300px] h-[300px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(160_70%_40%/0.06),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(160_60%_50%/0.10),transparent_60%)]"}`} />
 
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-5 py-4">
