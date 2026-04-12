@@ -42,7 +42,7 @@ const HomePage = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSuper(true)}
-              className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary/15 to-primary/5 border border-primary/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary transition-all hover:scale-105 active:scale-95"
+              className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/10 border border-amber-400/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-500 transition-all hover:scale-105 active:scale-95"
             >
               <Crown className="h-3 w-3" />
               Super
