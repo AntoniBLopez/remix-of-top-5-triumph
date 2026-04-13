@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Clock, ArrowLeft, Calendar, ArrowRight } from "lucide-react";
+import { Search, Clock, ArrowLeft, Calendar, ArrowRight, Sun, Moon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { useTheme } from "@/components/ThemeProvider";
 
 const CATEGORIES = ["Todos", "Gramática", "Vocabulario", "Cultura", "Consejos", "Pronunciación"];
 
@@ -50,22 +51,37 @@ export default function BlogPage() {
     return matchesSearch && matchesCategory;
   });
 
+  const { theme, toggleTheme } = useTheme();
   const featured = filtered[0];
   const rest = filtered.slice(1);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Subtle background pattern */}
+      <div className="pointer-events-none fixed inset-0 z-0" style={{
+        backgroundImage: `radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.04) 0%, transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--primary) / 0.03) 0%, transparent 50%)`,
+      }} />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.015]" style={{
+        backgroundImage: `radial-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
+        backgroundSize: '24px 24px',
+      }} />
+
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-            <ArrowLeft className="h-5 w-5" />
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-8">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-xl font-bold tracking-tight text-foreground">Blog</h1>
+          </div>
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-muted-foreground hover:text-foreground">
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
-          <h1 className="text-xl font-bold tracking-tight text-foreground">Blog</h1>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-10 md:px-8">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 py-10 md:px-8">
         {/* Hero */}
         <motion.div
           initial="hidden"
