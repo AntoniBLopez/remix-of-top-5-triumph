@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Edit, Trash2, Eye, EyeOff, ArrowLeft, LogOut } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, ArrowLeft, LogOut, CalendarClock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
@@ -114,28 +114,44 @@ export default function AdminBlogPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Título</TableHead>
-                  <TableHead>Categoría</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead>Fecha</TableHead>
-                  <TableHead className="text-right">Acciones</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {posts.map((post) => (
-                  <TableRow key={post.id}>
-                    <TableCell className="font-medium">{post.title}</TableCell>
-                    <TableCell>
-                      {post.category && <Badge variant="secondary">{post.category}</Badge>}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={post.published ? "default" : "outline"}>
-                        {post.published ? "Publicado" : "Borrador"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {new Date(post.created_at).toLocaleDateString("es-ES")}
-                    </TableCell>
+                   <TableHead>Título</TableHead>
+                   <TableHead>Categoría</TableHead>
+                   <TableHead>Estado</TableHead>
+                   <TableHead>Programado</TableHead>
+                   <TableHead>Fecha</TableHead>
+                   <TableHead className="text-right">Acciones</TableHead>
+                 </TableRow>
+               </TableHeader>
+               <TableBody>
+                 {posts.map((post) => (
+                   <TableRow key={post.id}>
+                     <TableCell className="font-medium">{post.title}</TableCell>
+                     <TableCell>
+                       {post.category && <Badge variant="secondary">{post.category}</Badge>}
+                     </TableCell>
+                     <TableCell>
+                       <Badge variant={post.published ? "default" : "outline"}>
+                         {post.published ? "Publicado" : "Borrador"}
+                       </Badge>
+                     </TableCell>
+                     <TableCell>
+                       {(post as any).scheduled_at ? (
+                         <span className="flex items-center gap-1 text-sm text-primary">
+                           <CalendarClock className="h-3.5 w-3.5" />
+                           {new Date((post as any).scheduled_at).toLocaleDateString("es-ES", {
+                             day: "numeric",
+                             month: "short",
+                             hour: "2-digit",
+                             minute: "2-digit",
+                           })}
+                         </span>
+                       ) : (
+                         <span className="text-xs text-muted-foreground">—</span>
+                       )}
+                     </TableCell>
+                     <TableCell className="text-sm text-muted-foreground">
+                       {new Date(post.created_at).toLocaleDateString("es-ES")}
+                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Button
