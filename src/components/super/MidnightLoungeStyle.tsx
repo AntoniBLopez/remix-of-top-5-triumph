@@ -43,13 +43,13 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
       <div className={`pointer-events-none absolute bottom-[-100px] left-[-50px] w-[300px] h-[300px] rounded-full ${dark ? "bg-[radial-gradient(circle,hsl(160_70%_40%/0.06),transparent_60%)]" : "bg-[radial-gradient(circle,hsl(200_60%_60%/0.15),transparent_60%)]"}`} />
 
       {/* Top bar */}
-      <div className="relative z-10 flex items-center justify-between px-5 py-4">
-        <button onClick={onClose} className="p-2 rounded-full transition-colors hover:bg-white/5">
-          <X className="h-4 w-4 text-white/40" />
+      <div className="relative z-10 flex items-center justify-between px-5 py-4 md:px-8 md:py-5">
+        <button onClick={onClose} className="p-2 md:p-3 rounded-full transition-colors hover:bg-white/5">
+          <X className="h-4 w-4 md:h-5 md:w-5 text-white/40" />
         </button>
-        <div className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-400/20 to-orange-500/10 border border-orange-400/20 px-3 py-1">
-          <Crown className={`h-3 w-3 ${accentSolid}`} />
-          <span className={`text-[10px] font-bold uppercase tracking-wider ${accentText}`}>Super</span>
+        <div className="flex items-center gap-1.5 md:gap-2 rounded-full bg-gradient-to-r from-orange-400/20 to-orange-500/10 border border-orange-400/20 px-3 py-1 md:px-4 md:py-1.5">
+          <Crown className={`h-3 w-3 md:h-4 md:w-4 ${accentSolid}`} />
+          <span className={`text-[10px] md:text-xs font-bold uppercase tracking-wider ${accentText}`}>Super</span>
         </div>
       </div>
 
