@@ -63,8 +63,14 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                 <p className={`text-xs uppercase tracking-[0.2em] mb-10 ${dark ? "text-white/30" : "text-gray-400"}`}>Free vs Super</p>
 
                 <div className="w-full mb-8 space-y-0">
-                  {FEATURES.map((f) => (
-                    <div key={f.name} className={`flex items-center justify-between py-3 border-b last:border-0 ${dark ? "border-white/[0.04]" : "border-black/[0.06]"}`}>
+                  {FEATURES.map((f, i) => (
+                    <motion.div
+                      key={f.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.15 + i * 0.07, duration: 0.25, ease: "easeOut" }}
+                      className={`flex items-center justify-between py-3 border-b last:border-0 ${dark ? "border-white/[0.04]" : "border-black/[0.06]"}`}
+                    >
                       <span className={`text-sm ${dark ? "text-white/50" : "text-gray-500"}`}>{f.name}</span>
                       <div className="flex items-center gap-6">
                         <span className={`text-xs font-medium ${f.free ? (dark ? "text-white/30" : "text-gray-300") : (dark ? "text-white/10" : "text-gray-200")}`}>
@@ -72,7 +78,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                         </span>
                         <span className={`text-xs font-bold ${dark ? "text-white" : "text-gray-900"}`}>✓</span>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 

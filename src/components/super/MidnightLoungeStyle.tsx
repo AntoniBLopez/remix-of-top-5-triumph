@@ -81,7 +81,13 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                     <span className={`text-[10px] md:text-xs font-semibold uppercase tracking-wider text-center ${accent}`}>Super</span>
                   </div>
                   {FEATURES.map((f, i) => (
-                    <div key={f.name} className={`grid grid-cols-[1fr_60px_60px] md:grid-cols-[1fr_80px_80px] items-center px-5 py-3 md:py-4 ${i < FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}`}>
+                    <motion.div
+                      key={f.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.15 + i * 0.07, duration: 0.25, ease: "easeOut" }}
+                      className={`grid grid-cols-[1fr_60px_60px] md:grid-cols-[1fr_80px_80px] items-center px-5 py-3 md:py-4 ${i < FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}`}
+                    >
                       <span className="text-sm md:text-base text-white/80">{f.name}</span>
                       <div className="flex justify-center">
                         {f.free ? <div className="h-5 w-5 rounded-full flex items-center justify-center bg-white/10"><Check className="h-3 w-3 text-white/40" /></div> : <span className="text-white/20">—</span>}
@@ -91,7 +97,7 @@ export default function MidnightLoungeStyle({ onClose }: Props) {
                           <Check className="h-3 w-3 text-orange-400" />
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 

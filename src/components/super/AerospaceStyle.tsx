@@ -70,7 +70,13 @@ export default function AerospaceStyle({ onClose }: Props) {
                     <span className="font-mono text-[9px] uppercase tracking-widest text-cyan-500 text-center">Super</span>
                   </div>
                   {FEATURES.map((f, i) => (
-                    <div key={f.name} className={`grid grid-cols-[1fr_56px_56px] items-center px-4 py-3 ${i < FEATURES.length - 1 ? `border-b ${dark ? "border-white/5" : "border-black/5"}` : ""}`}>
+                    <motion.div
+                      key={f.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.15 + i * 0.07, duration: 0.25, ease: "easeOut" }}
+                      className={`grid grid-cols-[1fr_56px_56px] items-center px-4 py-3 ${i < FEATURES.length - 1 ? `border-b ${dark ? "border-white/5" : "border-black/5"}` : ""}`}
+                    >
                       <span className={`text-sm ${dark ? "text-white/70" : "text-gray-600"}`}>{f.name}</span>
                       <div className="flex justify-center">
                         {f.free ? <Check className={`h-3.5 w-3.5 ${dark ? "text-white/25" : "text-gray-300"}`} /> : <span className={`text-xs ${dark ? "text-white/10" : "text-gray-200"}`}>—</span>}
@@ -78,7 +84,7 @@ export default function AerospaceStyle({ onClose }: Props) {
                       <div className="flex justify-center">
                         <Check className="h-3.5 w-3.5 text-cyan-500" />
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
