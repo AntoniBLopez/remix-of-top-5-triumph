@@ -145,7 +145,7 @@ export default function AdminBlogEditorPage() {
       .map((t) => t.trim())
       .filter(Boolean);
 
-    const postData: Record<string, any> = {
+    const postData = {
       title,
       slug,
       excerpt: excerpt || null,
