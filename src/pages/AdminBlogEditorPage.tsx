@@ -302,42 +302,70 @@ export default function AdminBlogEditorPage() {
               />
             </div>
 
-            {/* Scheduled publish */}
-            <div className="rounded-lg border border-border/50 p-3 space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <CalendarClock className="h-4 w-4 text-primary" />
-                Programar publicación
-              </div>
-              <Input
-                type="datetime-local"
-                value={scheduledAt}
-                onChange={(e) => {
-                  setScheduledAt(e.target.value);
-                  if (e.target.value) setPublished(false);
-                }}
-                min={new Date().toISOString().slice(0, 16)}
-                className="text-sm"
-              />
-              {scheduledAt && (
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground">
-                    Se publicará automáticamente el{" "}
-                    {new Date(scheduledAt).toLocaleDateString("es-ES", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setScheduledAt("")}
-                    className="text-xs text-destructive hover:underline"
+            <div>
+              <Label>Programar publicación</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "mt-1 w-full justify-start text-left font-normal",
+                      !scheduledAt && "text-muted-foreground"
+                    )}
                   >
-                    Cancelar
-                  </button>
-                </div>
+                    <CalendarClock className="mr-2 h-4 w-4" />
+                    {scheduledAt
+                      ? new Date(scheduledAt).toLocaleDateString("es-ES", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : "Seleccionar fecha y hora"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={scheduledAt ? new Date(scheduledAt) : undefined}
+                    onSelect={(date) => {
+                      if (date) {
+                        const prev = scheduledAt ? new Date(scheduledAt) : new Date();
+                        date.setHours(prev.getHours(), prev.getMinutes());
+                        setScheduledAt(date.toISOString().slice(0, 16));
+                        setPublished(false);
+                      }
+                    }}
+                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                  <div className="border-t border-border px-3 py-2">
+                    <Label className="text-xs text-muted-foreground">Hora</Label>
+                    <Input
+                      type="time"
+                      value={scheduledAt ? scheduledAt.slice(11, 16) : ""}
+                      onChange={(e) => {
+                        const d = scheduledAt ? new Date(scheduledAt) : new Date();
+                        const [h, m] = e.target.value.split(":").map(Number);
+                        d.setHours(h, m);
+                        setScheduledAt(d.toISOString().slice(0, 16));
+                        setPublished(false);
+                      }}
+                      className="mt-1 text-sm"
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
+              {scheduledAt && (
+                <button
+                  type="button"
+                  onClick={() => setScheduledAt("")}
+                  className="mt-1.5 text-xs text-destructive hover:underline"
+                >
+                  Cancelar programación
+                </button>
               )}
             </div>
 
