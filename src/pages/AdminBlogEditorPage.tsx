@@ -367,22 +367,35 @@ export default function AdminBlogEditorPage() {
                   </div>
                 </div>
               ) : (
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={uploading}
-                  className="mt-2 w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/60 hover:border-primary/40 bg-muted/30 hover:bg-muted/50 transition-colors py-8 cursor-pointer"
-                >
-                  {uploading ? (
-                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  ) : (
-                    <ImageIcon className="h-8 w-8 text-muted-foreground" />
-                  )}
-                  <span className="text-sm text-muted-foreground">
-                    {uploading ? "Subiendo..." : "Haz clic para subir una imagen"}
-                  </span>
-                  <span className="text-xs text-muted-foreground/60">PNG, JPG, WebP · Máx. 5MB</span>
-                </button>
+                <div className="mt-2 space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/60 hover:border-primary/40 bg-muted/30 hover:bg-muted/50 transition-colors py-6 cursor-pointer"
+                  >
+                    {uploading ? (
+                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                    ) : (
+                      <ImageIcon className="h-7 w-7 text-muted-foreground" />
+                    )}
+                    <span className="text-sm text-muted-foreground">
+                      {uploading ? "Subiendo..." : "Subir imagen"}
+                    </span>
+                    <span className="text-xs text-muted-foreground/60">PNG, JPG, WebP · Máx. 5MB</span>
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <div className="h-px flex-1 bg-border/50" />
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground/50">o</span>
+                    <div className="h-px flex-1 bg-border/50" />
+                  </div>
+                  <Input
+                    value={coverUrl}
+                    onChange={(e) => setCoverUrl(e.target.value)}
+                    placeholder="Pegar URL de imagen..."
+                    className="text-sm"
+                  />
+                </div>
               )}
             </div>
 
