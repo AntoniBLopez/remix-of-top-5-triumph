@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Eye } from "lucide-react";
+import { ArrowLeft, Save, Eye, Upload, X, Image as ImageIcon } from "lucide-react";
 import MarkdownHelpDialog from "@/components/blog/MarkdownHelpDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -82,6 +82,41 @@ export default function AdminBlogEditorPage() {
   }, [title, slugManual]);
 
   const readingTime = useMemo(() => estimateReadingTime(content), [content]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Solo se permiten imágenes", variant: "destructive" });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "La imagen no puede superar 5MB", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const path = `covers/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("blog-images")
+      .upload(path, file, { cacheControl: "3600", upsert: false });
+
+    if (uploadError) {
+      toast({ title: "Error al subir imagen", description: uploadError.message, variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+
+    const { data: { publicUrl } } = supabase.storage.from("blog-images").getPublicUrl(path);
+    setCoverUrl(publicUrl);
+    setUploading(false);
+    toast({ title: "Imagen subida correctamente" });
+  };
 
   const handleSave = async () => {
     const {
@@ -295,21 +330,59 @@ export default function AdminBlogEditorPage() {
             </div>
 
             <div>
-              <Label htmlFor="cover">URL imagen de portada</Label>
-              <Input
-                id="cover"
-                value={coverUrl}
-                onChange={(e) => setCoverUrl(e.target.value)}
-                placeholder="https://..."
-                className="mt-1"
+              <Label>Imagen de portada</Label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
               />
-              {coverUrl && (
-                <img
-                  src={coverUrl}
-                  alt="Preview"
-                  className="mt-2 w-full rounded-lg object-cover"
-                  onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
-                />
+              {coverUrl ? (
+                <div className="relative mt-2 group">
+                  <img
+                    src={coverUrl}
+                    alt="Portada"
+                    className="w-full rounded-lg object-cover aspect-video"
+                    onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+                  />
+                  <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploading}
+                    >
+                      <Upload className="h-3.5 w-3.5 mr-1" /> Cambiar
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => setCoverUrl("")}
+                    >
+                      <X className="h-3.5 w-3.5 mr-1" /> Quitar
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="mt-2 w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/60 hover:border-primary/40 bg-muted/30 hover:bg-muted/50 transition-colors py-8 cursor-pointer"
+                >
+                  {uploading ? (
+                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  ) : (
+                    <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                  )}
+                  <span className="text-sm text-muted-foreground">
+                    {uploading ? "Subiendo..." : "Haz clic para subir una imagen"}
+                  </span>
+                  <span className="text-xs text-muted-foreground/60">PNG, JPG, WebP · Máx. 5MB</span>
+                </button>
               )}
             </div>
 

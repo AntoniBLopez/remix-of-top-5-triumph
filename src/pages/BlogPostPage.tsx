@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, Calendar, User, Share2, Tag, ArrowRight } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, User, Share2, Tag, ArrowRight, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -66,17 +67,33 @@ export default function BlogPostPage() {
     );
   }
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Subtle background pattern */}
+      <div className="pointer-events-none fixed inset-0 z-0" style={{
+        backgroundImage: `radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.04) 0%, transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--primary) / 0.03) 0%, transparent 50%)`,
+      }} />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.015]" style={{
+        backgroundImage: `radial-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
+        backgroundSize: '24px 24px',
+      }} />
+
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 md:px-8">
           <Button variant="ghost" size="sm" onClick={() => navigate("/blog")} className="gap-1.5 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> Blog
           </Button>
-          <Button variant="ghost" size="icon" onClick={handleShare} className="text-muted-foreground hover:text-foreground">
-            <Share2 className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-muted-foreground hover:text-foreground">
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleShare} className="text-muted-foreground hover:text-foreground">
+              <Share2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </header>
 
