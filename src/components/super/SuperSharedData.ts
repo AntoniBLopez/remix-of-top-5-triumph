@@ -18,8 +18,8 @@ export interface Plan {
 }
 
 export const ALL_PLANS: Plan[] = [
-  { id: "annual", badge: "MÁS POPULAR", name: "12 meses", duration: "", price: "€8,49 / mes" },
   { id: "family", badge: "2-6 MIEMBROS", name: "Plan Familiar", duration: "12 meses", price: "€10,25 / mes" },
+  { id: "annual", badge: "MÁS POPULAR", name: "12 meses", duration: "", price: "€8,49 / mes" },
   { id: "monthly", name: "1 mes", duration: "", price: "€18,49 / mes" },
 ];
 
