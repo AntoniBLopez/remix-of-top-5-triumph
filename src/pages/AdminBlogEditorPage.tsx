@@ -330,21 +330,59 @@ export default function AdminBlogEditorPage() {
             </div>
 
             <div>
-              <Label htmlFor="cover">URL imagen de portada</Label>
-              <Input
-                id="cover"
-                value={coverUrl}
-                onChange={(e) => setCoverUrl(e.target.value)}
-                placeholder="https://..."
-                className="mt-1"
+              <Label>Imagen de portada</Label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
               />
-              {coverUrl && (
-                <img
-                  src={coverUrl}
-                  alt="Preview"
-                  className="mt-2 w-full rounded-lg object-cover"
-                  onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
-                />
+              {coverUrl ? (
+                <div className="relative mt-2 group">
+                  <img
+                    src={coverUrl}
+                    alt="Portada"
+                    className="w-full rounded-lg object-cover aspect-video"
+                    onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+                  />
+                  <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploading}
+                    >
+                      <Upload className="h-3.5 w-3.5 mr-1" /> Cambiar
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => setCoverUrl("")}
+                    >
+                      <X className="h-3.5 w-3.5 mr-1" /> Quitar
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="mt-2 w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/60 hover:border-primary/40 bg-muted/30 hover:bg-muted/50 transition-colors py-8 cursor-pointer"
+                >
+                  {uploading ? (
+                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  ) : (
+                    <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                  )}
+                  <span className="text-sm text-muted-foreground">
+                    {uploading ? "Subiendo..." : "Haz clic para subir una imagen"}
+                  </span>
+                  <span className="text-xs text-muted-foreground/60">PNG, JPG, WebP · Máx. 5MB</span>
+                </button>
               )}
             </div>
 
