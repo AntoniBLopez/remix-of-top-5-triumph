@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Eye, Upload, X, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Save, Eye, Upload, X, Image as ImageIcon, CalendarClock } from "lucide-react";
 import MarkdownHelpDialog from "@/components/blog/MarkdownHelpDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +47,7 @@ export default function AdminBlogEditorPage() {
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [published, setPublished] = useState(false);
+  const [scheduledAt, setScheduledAt] = useState("");
   const [authorName, setAuthorName] = useState("Equipo VerboFlow");
   const [saving, setSaving] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
@@ -69,6 +70,10 @@ export default function AdminBlogEditorPage() {
             setTagsInput((data.tags || []).join(", "));
             setPublished(data.published || false);
             setAuthorName(data.author_name || "Equipo VerboFlow");
+            if ((data as any).scheduled_at) {
+              const d = new Date((data as any).scheduled_at);
+              setScheduledAt(d.toISOString().slice(0, 16));
+            }
             setSlugManual(true);
           }
         });
@@ -140,7 +145,7 @@ export default function AdminBlogEditorPage() {
       .map((t) => t.trim())
       .filter(Boolean);
 
-    const postData = {
+    const postData: Record<string, any> = {
       title,
       slug,
       excerpt: excerpt || null,
@@ -148,9 +153,10 @@ export default function AdminBlogEditorPage() {
       cover_image_url: coverUrl || null,
       category: category || null,
       tags: tags.length > 0 ? tags : null,
-      published,
+      published: scheduledAt ? false : published,
       author_name: authorName,
       reading_time: readingTime,
+      scheduled_at: scheduledAt ? new Date(scheduledAt).toISOString() : null,
     };
 
     let error;
@@ -286,7 +292,53 @@ export default function AdminBlogEditorPage() {
           <div className="space-y-5 rounded-2xl border border-border/50 bg-card p-5">
             <div className="flex items-center justify-between">
               <Label>Publicado</Label>
-              <Switch checked={published} onCheckedChange={setPublished} />
+              <Switch
+                checked={published}
+                onCheckedChange={(v) => {
+                  setPublished(v);
+                  if (v) setScheduledAt("");
+                }}
+                disabled={!!scheduledAt}
+              />
+            </div>
+
+            {/* Scheduled publish */}
+            <div className="rounded-lg border border-border/50 p-3 space-y-2">
+              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                <CalendarClock className="h-4 w-4 text-primary" />
+                Programar publicación
+              </div>
+              <Input
+                type="datetime-local"
+                value={scheduledAt}
+                onChange={(e) => {
+                  setScheduledAt(e.target.value);
+                  if (e.target.value) setPublished(false);
+                }}
+                min={new Date().toISOString().slice(0, 16)}
+                className="text-sm"
+              />
+              {scheduledAt && (
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    Se publicará automáticamente el{" "}
+                    {new Date(scheduledAt).toLocaleDateString("es-ES", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setScheduledAt("")}
+                    className="text-xs text-destructive hover:underline"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              )}
             </div>
 
             <div>
