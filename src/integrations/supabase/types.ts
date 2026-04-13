@@ -25,6 +25,7 @@ export type Database = {
           id: string
           published: boolean | null
           reading_time: number | null
+          scheduled_at: string | null
           slug: string
           tags: string[] | null
           title: string
@@ -40,6 +41,7 @@ export type Database = {
           id?: string
           published?: boolean | null
           reading_time?: number | null
+          scheduled_at?: string | null
           slug: string
           tags?: string[] | null
           title: string
@@ -55,6 +57,7 @@ export type Database = {
           id?: string
           published?: boolean | null
           reading_time?: number | null
+          scheduled_at?: string | null
           slug?: string
           tags?: string[] | null
           title?: string
