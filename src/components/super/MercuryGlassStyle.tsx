@@ -51,7 +51,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className="w-full max-w-md flex flex-col items-center"
           >
             {step === "compare" && (
@@ -132,7 +132,7 @@ export default function MercuryGlassStyle({ onClose }: Props) {
                         key={p.id}
                         layout
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: sel ? 1.03 : 1, transition: { delay: i * 0.06, duration: 0.3 } }}
+                        animate={{ opacity: 1, y: 0, scale: sel ? 1.03 : 1, transition: { delay: i * 0.03, duration: 0.15 } }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setSelectedPlan(p.id)}
