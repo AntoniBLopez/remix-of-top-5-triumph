@@ -34,13 +34,13 @@ export default function MercuryGlassStyle({ onClose }: Props) {
       <div className={`pointer-events-none absolute top-[10%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] ${dark ? "bg-[radial-gradient(ellipse,hsl(0_0%_100%/0.04),transparent_60%)]" : "bg-[radial-gradient(ellipse,hsl(0_0%_0%/0.02),transparent_60%)]"}`} />
 
       {/* Top bar */}
-      <div className="relative z-10 flex items-center justify-between px-5 py-4">
-        <button onClick={onClose} className={`p-2 rounded-full transition-colors ${dark ? "hover:bg-white/5" : "hover:bg-black/5"}`}>
-          <X className={`h-4 w-4 ${dark ? "text-white/30" : "text-gray-400"}`} />
+      <div className="relative z-10 flex items-center justify-between px-5 py-4 md:px-8 md:py-5">
+        <button onClick={onClose} className={`p-2 md:p-3 rounded-full transition-colors ${dark ? "hover:bg-white/5" : "hover:bg-black/5"}`}>
+          <X className={`h-4 w-4 md:h-5 md:w-5 ${dark ? "text-white/30" : "text-gray-400"}`} />
         </button>
-        <div className="flex items-center gap-1.5">
-          <Diamond className={`h-3 w-3 ${dark ? "text-white/60" : "text-gray-500"}`} />
-          <span className={`text-[10px] font-bold uppercase tracking-[0.3em] ${dark ? "text-white/50" : "text-gray-500"}`}>Super</span>
+        <div className="flex items-center gap-1.5 md:gap-2">
+          <Diamond className={`h-3 w-3 md:h-4 md:w-4 ${dark ? "text-white/60" : "text-gray-500"}`} />
+          <span className={`text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] ${dark ? "text-white/50" : "text-gray-500"}`}>Super</span>
         </div>
       </div>
 
