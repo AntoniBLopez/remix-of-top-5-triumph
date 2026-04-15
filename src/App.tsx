@@ -25,7 +25,7 @@ import ChatbotWidget from "./components/ChatbotWidget";
 import { CookieConsentProvider } from "./components/cookies/CookieConsentContext";
 import CookieConsentBanner from "./components/cookies/CookieConsentBanner";
 import PreferencesModal from "./components/cookies/PreferencesModal";
-import ManageCookiesButton from "./components/cookies/ManageCookiesButton";
+
 
 const queryClient = new QueryClient();
 
@@ -61,7 +61,7 @@ const App = () => (
           </BrowserRouter>
           <CookieConsentBanner />
           <PreferencesModal />
-          <ManageCookiesButton />
+          
         </CookieConsentProvider>
       </TooltipProvider>
     </ThemeProvider>
