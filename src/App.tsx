@@ -22,6 +22,10 @@ import AdminBlogPage from "./pages/AdminBlogPage";
 import AdminBlogEditorPage from "./pages/AdminBlogEditorPage";
 import NotFound from "./pages/NotFound";
 import ChatbotWidget from "./components/ChatbotWidget";
+import { CookieConsentProvider } from "./components/cookies/CookieConsentContext";
+import CookieConsentBanner from "./components/cookies/CookieConsentBanner";
+import PreferencesModal from "./components/cookies/PreferencesModal";
+import ManageCookiesButton from "./components/cookies/ManageCookiesButton";
 
 const queryClient = new QueryClient();
 
@@ -29,31 +33,36 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/conjugations" element={<ConjugationsPage />} />
-            <Route path="/conjugations/review" element={<SmartReviewPage />} />
-            <Route path="/conjugations/onboarding" element={<OnboardingPage />} />
-            <Route path="/achievements" element={<AchievementsPage />} />
-            <Route path="/analytics" element={<AnalyticsPage />} />
-            <Route path="/ranking" element={<RankingPage />} />
-            <Route path="/games/:mode" element={<GamesPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogPostPage />} />
-            <Route path="/admin/blog" element={<AdminBlogPage />} />
-            <Route path="/admin/blog/new" element={<AdminBlogEditorPage />} />
-            <Route path="/admin/blog/edit/:id" element={<AdminBlogEditorPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <ChatbotWidget />
-        </BrowserRouter>
+        <CookieConsentProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/conjugations" element={<ConjugationsPage />} />
+              <Route path="/conjugations/review" element={<SmartReviewPage />} />
+              <Route path="/conjugations/onboarding" element={<OnboardingPage />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+              <Route path="/ranking" element={<RankingPage />} />
+              <Route path="/games/:mode" element={<GamesPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/admin/blog" element={<AdminBlogPage />} />
+              <Route path="/admin/blog/new" element={<AdminBlogEditorPage />} />
+              <Route path="/admin/blog/edit/:id" element={<AdminBlogEditorPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <ChatbotWidget />
+          </BrowserRouter>
+          <CookieConsentBanner />
+          <PreferencesModal />
+          <ManageCookiesButton />
+        </CookieConsentProvider>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
