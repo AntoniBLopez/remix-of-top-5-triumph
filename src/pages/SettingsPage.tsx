@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreditCard, Trophy, MessageSquareHeart, ChevronRight, Send } from "lucide-react";
+import { CreditCard, Trophy, MessageSquareHeart, ChevronRight, Send, Cookie } from "lucide-react";
 import { motion } from "framer-motion";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import BottomNav from "@/components/BottomNav";
+import { useCookieConsent } from "@/components/cookies/CookieConsentContext";
 
 const FEEDBACK_PROMPTS = [
   "¿Te está gustando la app? ¡Cuéntanos!",
@@ -22,6 +23,7 @@ const FEEDBACK_PROMPTS = [
 const SettingsPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { setShowPreferences } = useCookieConsent();
   const [xpEnabled, setXpEnabled] = useState(true);
   const [feedback, setFeedback] = useState("");
 
@@ -100,6 +102,30 @@ const SettingsPage = () => {
               No acumularás XP ni aparecerás en el ranking semanal.
             </motion.p>
           )}
+        </motion.div>
+
+        {/* Cookies */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+        >
+          <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Privacidad</h2>
+          <div className="rounded-2xl border border-border bg-card overflow-hidden">
+            <button
+              onClick={() => setShowPreferences(true)}
+              className="flex w-full items-center gap-3 px-4 py-3.5 transition-colors hover:bg-muted/50"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
+                <Cookie className="h-4.5 w-4.5 text-primary" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-semibold text-foreground">Gestionar cookies</p>
+                <p className="text-xs text-muted-foreground">Configura tus preferencias de privacidad</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </button>
+          </div>
         </motion.div>
 
         {/* Feedback */}
