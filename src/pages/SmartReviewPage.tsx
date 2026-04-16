@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { X, Volume2, Check, AlertCircle, Zap, Brain, Target, RotateCcw } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { X, Volume2, Check, AlertCircle, Zap, Brain, Target, RotateCcw, CheckCircle2 } from "lucide-react";
 import { getStats } from "@/lib/fsrs";
 import { updateContextFromStats, checkAchievements, recordPerfectSession, recordSession, type Achievement } from "@/lib/achievements";
 import AchievementUnlockPopup from "@/components/AchievementUnlockPopup";
@@ -15,6 +15,12 @@ import {
   type FSRSCard,
   type Rating,
 } from "@/lib/fsrs";
+import {
+  getDailySmartReviewMetrics,
+  getDailySessionSize,
+  incrementCompletedToday,
+} from "@/lib/smartReviewDaily";
+import { trackSmartReview } from "@/lib/smartReviewAnalytics";
 
 // ── Types ──
 type CardState = "answering" | "feedback";
