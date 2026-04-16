@@ -365,7 +365,18 @@ const DAILY_CONTINUE_COUNT = 5;
 
 const SmartReviewPage = () => {
   const navigate = useNavigate();
-  const [queue, setQueue] = useState<ReviewCard[]>(() => buildReviewQueue(REVIEW_COUNT));
+  const [searchParams] = useSearchParams();
+  const dailyMode = searchParams.get("mode") === "daily";
+
+  const initialSize = useMemo(() => {
+    if (dailyMode) {
+      const size = getDailySessionSize();
+      return Math.max(1, Math.min(size, FREE_REVIEW_COUNT * 2));
+    }
+    return FREE_REVIEW_COUNT;
+  }, [dailyMode]);
+
+  const [queue, setQueue] = useState<ReviewCard[]>(() => buildReviewQueue(initialSize));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardState, setCardState] = useState<CardState>("answering");
   const [sessionDone, setSessionDone] = useState(false);
@@ -376,9 +387,24 @@ const SmartReviewPage = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [ratings, setRatings] = useState<Rating[]>([]);
   const [lastCorrect, setLastCorrect] = useState(false);
+  const sessionStartRef = useRef<number>(Date.now());
+  const initialMetricsRef = useRef(getDailySmartReviewMetrics());
 
   const currentCard = queue[currentIndex];
   const progress = sessionDone ? 100 : queue.length > 0 ? (currentIndex / queue.length) * 100 : 0;
+
+  // Track session start once
+  useEffect(() => {
+    if (!dailyMode || queue.length === 0) return;
+    void trackSmartReview("smart_review_daily_started", {
+      dueCountStart: initialMetricsRef.current.dueCount,
+      newCountStart: initialMetricsRef.current.newAvailableToday,
+      dailyGoal: initialMetricsRef.current.dailyGoal,
+      completedTodayBefore: initialMetricsRef.current.completedToday,
+      sessionSize: queue.length,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const resetCardState = useCallback(() => {
     setSentenceAnswer("");
@@ -416,9 +442,12 @@ const SmartReviewPage = () => {
   }, [currentCard, tableAnswers]);
 
   const handleRate = useCallback((rating: Rating) => {
-    // Record in FSRS
     if (currentCard) {
       reviewCard(currentCard.id, rating, lastCorrect);
+      if (dailyMode) {
+        const wasNew = currentCard.fsrsCard.status === "new";
+        incrementCompletedToday(1, wasNew);
+      }
     }
     setRatings((prev) => [...prev, rating]);
     if (currentIndex + 1 >= queue.length) {
@@ -427,19 +456,22 @@ const SmartReviewPage = () => {
       setCurrentIndex((i) => i + 1);
       resetCardState();
     }
-  }, [currentIndex, queue.length, resetCardState, currentCard, lastCorrect]);
+  }, [currentIndex, queue.length, resetCardState, currentCard, lastCorrect, dailyMode]);
 
   const handleRestart = useCallback(() => {
-    const newQueue = buildReviewQueue(REVIEW_COUNT);
+    const size = dailyMode ? Math.min(DAILY_CONTINUE_COUNT, getDailySessionSize() || DAILY_CONTINUE_COUNT) : FREE_REVIEW_COUNT;
+    const newQueue = buildReviewQueue(Math.max(1, size));
     setQueue(newQueue);
     setCurrentIndex(0);
     setCorrectCount(0);
     setRatings([]);
     setSessionDone(false);
+    sessionStartRef.current = Date.now();
+    initialMetricsRef.current = getDailySmartReviewMetrics();
     resetCardState();
-  }, [resetCardState]);
+  }, [resetCardState, dailyMode]);
 
-  // Achievement check on session done
+  // Achievement check + analytics on session done
   const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
 
   useEffect(() => {
@@ -451,7 +483,38 @@ const SmartReviewPage = () => {
     else recordSession();
     const unlocked = checkAchievements(ctx);
     if (unlocked.length > 0) setNewAchievements(unlocked);
-  }, [sessionDone, correctCount, queue.length]);
+
+    if (dailyMode) {
+      const after = getDailySmartReviewMetrics();
+      const sessionDurationSec = Math.round((Date.now() - sessionStartRef.current) / 1000);
+      void trackSmartReview("smart_review_daily_completed", {
+        cardsReviewed: queue.length,
+        accuracy,
+        sessionDurationSec,
+        completedTodayAfter: after.completedToday,
+        dailyGoal: after.dailyGoal,
+      });
+      if (after.goalReached && initialMetricsRef.current.completedToday < after.dailyGoal) {
+        void trackSmartReview("smart_review_goal_reached", {
+          dailyGoal: after.dailyGoal,
+          completedToday: after.completedToday,
+        });
+      }
+    }
+  }, [sessionDone, correctCount, queue.length, dailyMode]);
+
+  // Track abandonment on unmount mid-session
+  useEffect(() => {
+    return () => {
+      if (dailyMode && !sessionDone && currentIndex > 0 && currentIndex < queue.length) {
+        void trackSmartReview("smart_review_daily_abandoned", {
+          cardsReviewed: currentIndex,
+          totalCards: queue.length,
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // No due cards
   if (queue.length === 0 && !sessionDone) {
