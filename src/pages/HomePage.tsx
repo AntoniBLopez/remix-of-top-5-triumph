@@ -114,6 +114,7 @@ const HomePage = () => {
 
       <BottomNav />
       <SuperUpgradeDialog open={showSuper} onClose={() => setShowSuper(false)} />
+      <DailyStreakPopup streakDays={MOCK_STREAK} open={showStreak} onClose={() => setShowStreak(false)} />
     </div>
   );
 };
