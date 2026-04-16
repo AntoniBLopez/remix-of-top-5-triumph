@@ -25,6 +25,8 @@ const FlashcardGame = ({ topicWords, onComplete }: Props) => {
     return () => clearTimeout(t);
   }, [currentIndex]);
 
+  if (!current) return null;
+
   const handleAnswer = (known: boolean) => {
     const germanWord = current[1];
     setExitDirection(known ? "right" : "left");
