@@ -113,6 +113,44 @@ const SettingsPage = () => {
           )}
         </motion.div>
 
+        {/* Daily Goal — Smart Review */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.11 }}
+        >
+          <h2 className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Smart Review</h2>
+          <div className="rounded-2xl border border-border bg-card overflow-hidden">
+            <div className="px-4 py-4 space-y-3.5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
+                  <Target className="h-4.5 w-4.5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-foreground">Meta diaria</p>
+                  <p className="text-xs text-muted-foreground">Tarjetas a revisar cada día</p>
+                </div>
+                <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-extrabold text-primary tabular-nums">
+                  {dailyGoal}
+                </span>
+              </div>
+              <Slider
+                value={[dailyGoal]}
+                onValueChange={handleGoalChange}
+                min={5}
+                max={100}
+                step={5}
+                aria-label="Meta diaria de tarjetas"
+              />
+              <div className="flex justify-between text-[10px] font-medium text-muted-foreground">
+                <span>5</span>
+                <span>50</span>
+                <span>100</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Cookies */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
