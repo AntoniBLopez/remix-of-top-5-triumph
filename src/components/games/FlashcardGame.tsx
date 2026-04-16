@@ -19,13 +19,13 @@ const FlashcardGame = ({ topicWords, onComplete }: Props) => {
   const answered = knownWords.length + learningWords.length;
   const current = topicWords[currentIndex];
 
-  if (!current) return null;
-
   useEffect(() => {
     setEntering(true);
     const t = setTimeout(() => setEntering(false), 300);
     return () => clearTimeout(t);
   }, [currentIndex]);
+
+  if (!current) return null;
 
   const handleAnswer = (known: boolean) => {
     const germanWord = current[1];
