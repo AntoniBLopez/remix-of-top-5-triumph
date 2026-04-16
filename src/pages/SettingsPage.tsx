@@ -1,13 +1,15 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreditCard, Trophy, MessageSquareHeart, ChevronRight, Send, Cookie } from "lucide-react";
+import { CreditCard, Trophy, MessageSquareHeart, ChevronRight, Send, Cookie, Target } from "lucide-react";
 import { motion } from "framer-motion";
 import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import BottomNav from "@/components/BottomNav";
 import { useCookieConsent } from "@/components/cookies/CookieConsentContext";
+import { getDailyGoal, setDailyGoal } from "@/lib/smartReviewDaily";
 
 const FEEDBACK_PROMPTS = [
   "¿Te está gustando la app? ¡Cuéntanos!",
@@ -26,6 +28,13 @@ const SettingsPage = () => {
   const { setShowPreferences } = useCookieConsent();
   const [xpEnabled, setXpEnabled] = useState(true);
   const [feedback, setFeedback] = useState("");
+  const [dailyGoal, setDailyGoalState] = useState<number>(() => getDailyGoal());
+
+  const handleGoalChange = (val: number[]) => {
+    const goal = val[0];
+    setDailyGoalState(goal);
+    setDailyGoal(goal);
+  };
 
   const feedbackPrompt = useMemo(
     () => FEEDBACK_PROMPTS[Math.floor(Math.random() * FEEDBACK_PROMPTS.length)],
