@@ -4,6 +4,7 @@ import { BookOpen, PenLine, Sun, Moon, Flame, Gamepad2, Crown } from "lucide-rea
 import { useTheme } from "@/components/ThemeProvider";
 import BottomNav from "@/components/BottomNav";
 import SuperUpgradeDialog from "@/components/SuperUpgradeDialog";
+import SmartReviewHubCard from "@/components/SmartReviewHubCard";
 const MOCK_STREAK = 7;
 
 const MODES = [
@@ -67,16 +68,25 @@ const HomePage = () => {
       </header>
 
       {/* Content */}
-      <div className="mx-auto max-w-2xl px-4 pb-8 pt-8 md:px-6 md:pt-16">
-        <div className="mb-10 text-center md:mb-14">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 md:h-20 md:w-20">
-            <Gamepad2 className="h-8 w-8 text-primary md:h-10 md:w-10" />
-          </div>
-          <h1 className="text-2xl font-extrabold text-foreground md:text-3xl">¿Qué quieres practicar?</h1>
-          <p className="mt-2 text-sm text-muted-foreground md:text-base">Elige un modo para comenzar a aprender</p>
-        </div>
+      <div className="mx-auto max-w-2xl px-4 pb-8 pt-6 md:px-6 md:pt-10 space-y-8">
+        {/* Smart Review Hub — daily plan */}
+        <SmartReviewHubCard />
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+        {/* Free practice section */}
+        <div>
+          <div className="mb-5 text-center">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              Práctica libre
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold text-foreground md:text-2xl">
+              ¿Qué quieres practicar?
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground md:text-sm">
+              Juegos sin afectar tu plan diario
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
           {MODES.map(({ id, label, desc, emoji, route }) => (
             <button
               key={id}
@@ -92,6 +102,7 @@ const HomePage = () => {
               </div>
             </button>
           ))}
+          </div>
         </div>
       </div>
 

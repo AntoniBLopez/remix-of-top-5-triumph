@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { X, Volume2, Check, AlertCircle, Zap, Brain, Target, RotateCcw } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { X, Volume2, Check, AlertCircle, Zap, Brain, Target, RotateCcw, CheckCircle2 } from "lucide-react";
 import { getStats } from "@/lib/fsrs";
 import { updateContextFromStats, checkAchievements, recordPerfectSession, recordSession, type Achievement } from "@/lib/achievements";
 import AchievementUnlockPopup from "@/components/AchievementUnlockPopup";
@@ -15,6 +15,12 @@ import {
   type FSRSCard,
   type Rating,
 } from "@/lib/fsrs";
+import {
+  getDailySmartReviewMetrics,
+  getDailySessionSize,
+  incrementCompletedToday,
+} from "@/lib/smartReviewDaily";
+import { trackSmartReview } from "@/lib/smartReviewAnalytics";
 
 // ── Types ──
 type CardState = "answering" | "feedback";
@@ -248,15 +254,19 @@ const TableClozeView = ({
 // ── Session Summary ──
 const SessionSummary = ({
   totalCards, correctCount, ratings, onRestart, onGoHome,
+  dailyMode, dailyGoal, completedToday, remainingDue,
 }: {
   totalCards: number; correctCount: number; ratings: Rating[];
   onRestart: () => void; onGoHome: () => void;
+  dailyMode: boolean; dailyGoal: number; completedToday: number; remainingDue: number;
 }) => {
   const accuracy = totalCards > 0 ? Math.round((correctCount / totalCards) * 100) : 0;
   const xpEarned = ratings.reduce((acc, r) => {
     const xpMap: Record<Rating, number> = { easy: 15, good: 10, hard: 5, again: 2 };
     return acc + xpMap[r];
   }, 0);
+  const goalReached = dailyMode && completedToday >= dailyGoal;
+  const remainingToGoal = Math.max(0, dailyGoal - completedToday);
 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex min-h-[80dvh] flex-col items-center justify-center px-6">
@@ -264,11 +274,32 @@ const SessionSummary = ({
         <div className="flex flex-col items-center gap-3">
           <motion.div initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
             className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-5xl">
-            {accuracy >= 80 ? "🏆" : accuracy >= 50 ? "⭐" : "💪"}
+            {goalReached ? "🏆" : accuracy >= 80 ? "⭐" : accuracy >= 50 ? "💪" : "🌱"}
           </motion.div>
-          <h2 className="text-2xl font-extrabold text-foreground">{accuracy >= 80 ? "¡Excelente!" : accuracy >= 50 ? "¡Buen trabajo!" : "¡Sigue practicando!"}</h2>
-          <p className="text-sm text-muted-foreground">Sesión completada</p>
+          <h2 className="text-2xl font-extrabold text-foreground text-center">
+            {goalReached ? "¡Meta de hoy completada!" : accuracy >= 80 ? "¡Excelente!" : accuracy >= 50 ? "¡Buen trabajo!" : "¡Sigue practicando!"}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {dailyMode ? "Smart Review diario" : "Sesión completada"}
+          </p>
         </div>
+
+        {dailyMode && (
+          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold uppercase tracking-wider text-muted-foreground">Meta de hoy</span>
+              <span className="font-extrabold text-primary">{completedToday}/{dailyGoal}</span>
+            </div>
+            <Progress value={Math.min(100, (completedToday / dailyGoal) * 100)} className="h-2 bg-muted" />
+            {!goalReached && (
+              <p className="text-[11px] text-muted-foreground">Te faltan {remainingToGoal} para tu meta de hoy.</p>
+            )}
+            {remainingDue > 0 && (
+              <p className="text-[11px] text-muted-foreground">Aún tienes {remainingDue} vencidas pendientes.</p>
+            )}
+          </div>
+        )}
+
         <div className="grid grid-cols-3 gap-3">
           <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
             <Target className="h-5 w-5 text-primary" /><p className="text-xl font-extrabold text-foreground">{accuracy}%</p><p className="text-[10px] font-medium text-muted-foreground">Precisión</p>
@@ -294,12 +325,34 @@ const SessionSummary = ({
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <button onClick={onRestart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
-            <RotateCcw className="h-5 w-5" /> Otra sesión
-          </button>
-          <button onClick={onGoHome} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
-            Volver al dashboard
-          </button>
+          {dailyMode && !goalReached && remainingDue > 0 ? (
+            <>
+              <button onClick={onRestart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+                <RotateCcw className="h-5 w-5" /> Continuar 5 más
+              </button>
+              <button onClick={onGoHome} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
+                Terminar por ahora
+              </button>
+            </>
+          ) : goalReached ? (
+            <>
+              <button onClick={onGoHome} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+                <CheckCircle2 className="h-5 w-5" /> Terminar
+              </button>
+              <button onClick={onRestart} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
+                Practicar extra
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={onRestart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+                <RotateCcw className="h-5 w-5" /> Otra sesión
+              </button>
+              <button onClick={onGoHome} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
+                Volver al inicio
+              </button>
+            </>
+          )}
         </div>
       </div>
     </motion.div>
@@ -307,11 +360,23 @@ const SessionSummary = ({
 };
 
 // ── Main Page ──
-const REVIEW_COUNT = 10;
+const FREE_REVIEW_COUNT = 10;
+const DAILY_CONTINUE_COUNT = 5;
 
 const SmartReviewPage = () => {
   const navigate = useNavigate();
-  const [queue, setQueue] = useState<ReviewCard[]>(() => buildReviewQueue(REVIEW_COUNT));
+  const [searchParams] = useSearchParams();
+  const dailyMode = searchParams.get("mode") === "daily";
+
+  const initialSize = useMemo(() => {
+    if (dailyMode) {
+      const size = getDailySessionSize();
+      return Math.max(1, Math.min(size, FREE_REVIEW_COUNT * 2));
+    }
+    return FREE_REVIEW_COUNT;
+  }, [dailyMode]);
+
+  const [queue, setQueue] = useState<ReviewCard[]>(() => buildReviewQueue(initialSize));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardState, setCardState] = useState<CardState>("answering");
   const [sessionDone, setSessionDone] = useState(false);
@@ -322,9 +387,24 @@ const SmartReviewPage = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [ratings, setRatings] = useState<Rating[]>([]);
   const [lastCorrect, setLastCorrect] = useState(false);
+  const sessionStartRef = useRef<number>(Date.now());
+  const initialMetricsRef = useRef(getDailySmartReviewMetrics());
 
   const currentCard = queue[currentIndex];
   const progress = sessionDone ? 100 : queue.length > 0 ? (currentIndex / queue.length) * 100 : 0;
+
+  // Track session start once
+  useEffect(() => {
+    if (!dailyMode || queue.length === 0) return;
+    void trackSmartReview("smart_review_daily_started", {
+      dueCountStart: initialMetricsRef.current.dueCount,
+      newCountStart: initialMetricsRef.current.newAvailableToday,
+      dailyGoal: initialMetricsRef.current.dailyGoal,
+      completedTodayBefore: initialMetricsRef.current.completedToday,
+      sessionSize: queue.length,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const resetCardState = useCallback(() => {
     setSentenceAnswer("");
@@ -362,9 +442,12 @@ const SmartReviewPage = () => {
   }, [currentCard, tableAnswers]);
 
   const handleRate = useCallback((rating: Rating) => {
-    // Record in FSRS
     if (currentCard) {
       reviewCard(currentCard.id, rating, lastCorrect);
+      if (dailyMode) {
+        const wasNew = currentCard.fsrsCard.status === "new";
+        incrementCompletedToday(1, wasNew);
+      }
     }
     setRatings((prev) => [...prev, rating]);
     if (currentIndex + 1 >= queue.length) {
@@ -373,19 +456,22 @@ const SmartReviewPage = () => {
       setCurrentIndex((i) => i + 1);
       resetCardState();
     }
-  }, [currentIndex, queue.length, resetCardState, currentCard, lastCorrect]);
+  }, [currentIndex, queue.length, resetCardState, currentCard, lastCorrect, dailyMode]);
 
   const handleRestart = useCallback(() => {
-    const newQueue = buildReviewQueue(REVIEW_COUNT);
+    const size = dailyMode ? Math.min(DAILY_CONTINUE_COUNT, getDailySessionSize() || DAILY_CONTINUE_COUNT) : FREE_REVIEW_COUNT;
+    const newQueue = buildReviewQueue(Math.max(1, size));
     setQueue(newQueue);
     setCurrentIndex(0);
     setCorrectCount(0);
     setRatings([]);
     setSessionDone(false);
+    sessionStartRef.current = Date.now();
+    initialMetricsRef.current = getDailySmartReviewMetrics();
     resetCardState();
-  }, [resetCardState]);
+  }, [resetCardState, dailyMode]);
 
-  // Achievement check on session done
+  // Achievement check + analytics on session done
   const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
 
   useEffect(() => {
@@ -397,7 +483,38 @@ const SmartReviewPage = () => {
     else recordSession();
     const unlocked = checkAchievements(ctx);
     if (unlocked.length > 0) setNewAchievements(unlocked);
-  }, [sessionDone, correctCount, queue.length]);
+
+    if (dailyMode) {
+      const after = getDailySmartReviewMetrics();
+      const sessionDurationSec = Math.round((Date.now() - sessionStartRef.current) / 1000);
+      void trackSmartReview("smart_review_daily_completed", {
+        cardsReviewed: queue.length,
+        accuracy,
+        sessionDurationSec,
+        completedTodayAfter: after.completedToday,
+        dailyGoal: after.dailyGoal,
+      });
+      if (after.goalReached && initialMetricsRef.current.completedToday < after.dailyGoal) {
+        void trackSmartReview("smart_review_goal_reached", {
+          dailyGoal: after.dailyGoal,
+          completedToday: after.completedToday,
+        });
+      }
+    }
+  }, [sessionDone, correctCount, queue.length, dailyMode]);
+
+  // Track abandonment on unmount mid-session
+  useEffect(() => {
+    return () => {
+      if (dailyMode && !sessionDone && currentIndex > 0 && currentIndex < queue.length) {
+        void trackSmartReview("smart_review_daily_abandoned", {
+          cardsReviewed: currentIndex,
+          totalCards: queue.length,
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // No due cards
   if (queue.length === 0 && !sessionDone) {
@@ -415,8 +532,8 @@ const SmartReviewPage = () => {
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
           className="mt-8 flex flex-col gap-3 w-full max-w-xs">
-          <button onClick={() => navigate("/conjugations")} className="rounded-2xl bg-primary px-8 py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
-            Volver al dashboard
+          <button onClick={() => navigate(dailyMode ? "/home" : "/conjugations")} className="rounded-2xl bg-primary px-8 py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+            {dailyMode ? "Volver al inicio" : "Volver al dashboard"}
           </button>
           <button onClick={() => navigate("/analytics")} className="rounded-2xl border border-border bg-card px-8 py-3.5 text-sm font-bold text-foreground transition-colors hover:bg-muted/50">
             Ver analíticas
@@ -437,7 +554,11 @@ const SmartReviewPage = () => {
           />
         )}
         <SessionSummary totalCards={queue.length} correctCount={correctCount} ratings={ratings}
-          onRestart={handleRestart} onGoHome={() => navigate("/conjugations")} />
+          onRestart={handleRestart} onGoHome={() => navigate(dailyMode ? "/home" : "/conjugations")}
+          dailyMode={dailyMode}
+          dailyGoal={getDailySmartReviewMetrics().dailyGoal}
+          completedToday={getDailySmartReviewMetrics().completedToday}
+          remainingDue={getDailySmartReviewMetrics().dueCount} />
       </div>
     );
   }

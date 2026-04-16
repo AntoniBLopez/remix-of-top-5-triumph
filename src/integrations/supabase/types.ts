@@ -65,6 +65,33 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_review_events: {
+        Row: {
+          created_at: string
+          event_name: string
+          id: string
+          props: Json | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_name: string
+          id?: string
+          props?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_name?: string
+          id?: string
+          props?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
