@@ -532,8 +532,8 @@ const SmartReviewPage = () => {
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
           className="mt-8 flex flex-col gap-3 w-full max-w-xs">
-          <button onClick={() => navigate("/conjugations")} className="rounded-2xl bg-primary px-8 py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
-            Volver al dashboard
+          <button onClick={() => navigate(dailyMode ? "/home" : "/conjugations")} className="rounded-2xl bg-primary px-8 py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+            {dailyMode ? "Volver al inicio" : "Volver al dashboard"}
           </button>
           <button onClick={() => navigate("/analytics")} className="rounded-2xl border border-border bg-card px-8 py-3.5 text-sm font-bold text-foreground transition-colors hover:bg-muted/50">
             Ver analíticas
@@ -554,7 +554,11 @@ const SmartReviewPage = () => {
           />
         )}
         <SessionSummary totalCards={queue.length} correctCount={correctCount} ratings={ratings}
-          onRestart={handleRestart} onGoHome={() => navigate("/conjugations")} />
+          onRestart={handleRestart} onGoHome={() => navigate(dailyMode ? "/home" : "/conjugations")}
+          dailyMode={dailyMode}
+          dailyGoal={getDailySmartReviewMetrics().dailyGoal}
+          completedToday={getDailySmartReviewMetrics().completedToday}
+          remainingDue={getDailySmartReviewMetrics().dueCount} />
       </div>
     );
   }
