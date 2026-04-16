@@ -19,6 +19,8 @@ const FlashcardGame = ({ topicWords, onComplete }: Props) => {
   const answered = knownWords.length + learningWords.length;
   const current = topicWords[currentIndex];
 
+  if (!current) return null;
+
   useEffect(() => {
     setEntering(true);
     const t = setTimeout(() => setEntering(false), 300);
