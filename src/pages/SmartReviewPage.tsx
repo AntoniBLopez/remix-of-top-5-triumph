@@ -254,15 +254,19 @@ const TableClozeView = ({
 // ── Session Summary ──
 const SessionSummary = ({
   totalCards, correctCount, ratings, onRestart, onGoHome,
+  dailyMode, dailyGoal, completedToday, remainingDue,
 }: {
   totalCards: number; correctCount: number; ratings: Rating[];
   onRestart: () => void; onGoHome: () => void;
+  dailyMode: boolean; dailyGoal: number; completedToday: number; remainingDue: number;
 }) => {
   const accuracy = totalCards > 0 ? Math.round((correctCount / totalCards) * 100) : 0;
   const xpEarned = ratings.reduce((acc, r) => {
     const xpMap: Record<Rating, number> = { easy: 15, good: 10, hard: 5, again: 2 };
     return acc + xpMap[r];
   }, 0);
+  const goalReached = dailyMode && completedToday >= dailyGoal;
+  const remainingToGoal = Math.max(0, dailyGoal - completedToday);
 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex min-h-[80dvh] flex-col items-center justify-center px-6">
@@ -270,11 +274,32 @@ const SessionSummary = ({
         <div className="flex flex-col items-center gap-3">
           <motion.div initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
             className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-5xl">
-            {accuracy >= 80 ? "🏆" : accuracy >= 50 ? "⭐" : "💪"}
+            {goalReached ? "🏆" : accuracy >= 80 ? "⭐" : accuracy >= 50 ? "💪" : "🌱"}
           </motion.div>
-          <h2 className="text-2xl font-extrabold text-foreground">{accuracy >= 80 ? "¡Excelente!" : accuracy >= 50 ? "¡Buen trabajo!" : "¡Sigue practicando!"}</h2>
-          <p className="text-sm text-muted-foreground">Sesión completada</p>
+          <h2 className="text-2xl font-extrabold text-foreground text-center">
+            {goalReached ? "¡Meta de hoy completada!" : accuracy >= 80 ? "¡Excelente!" : accuracy >= 50 ? "¡Buen trabajo!" : "¡Sigue practicando!"}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {dailyMode ? "Smart Review diario" : "Sesión completada"}
+          </p>
         </div>
+
+        {dailyMode && (
+          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold uppercase tracking-wider text-muted-foreground">Meta de hoy</span>
+              <span className="font-extrabold text-primary">{completedToday}/{dailyGoal}</span>
+            </div>
+            <Progress value={Math.min(100, (completedToday / dailyGoal) * 100)} className="h-2 bg-muted" />
+            {!goalReached && (
+              <p className="text-[11px] text-muted-foreground">Te faltan {remainingToGoal} para tu meta de hoy.</p>
+            )}
+            {remainingDue > 0 && (
+              <p className="text-[11px] text-muted-foreground">Aún tienes {remainingDue} vencidas pendientes.</p>
+            )}
+          </div>
+        )}
+
         <div className="grid grid-cols-3 gap-3">
           <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-4">
             <Target className="h-5 w-5 text-primary" /><p className="text-xl font-extrabold text-foreground">{accuracy}%</p><p className="text-[10px] font-medium text-muted-foreground">Precisión</p>
@@ -300,12 +325,34 @@ const SessionSummary = ({
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <button onClick={onRestart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
-            <RotateCcw className="h-5 w-5" /> Otra sesión
-          </button>
-          <button onClick={onGoHome} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
-            Volver al dashboard
-          </button>
+          {dailyMode && !goalReached && remainingDue > 0 ? (
+            <>
+              <button onClick={onRestart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+                <RotateCcw className="h-5 w-5" /> Continuar 5 más
+              </button>
+              <button onClick={onGoHome} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
+                Terminar por ahora
+              </button>
+            </>
+          ) : goalReached ? (
+            <>
+              <button onClick={onGoHome} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+                <CheckCircle2 className="h-5 w-5" /> Terminar
+              </button>
+              <button onClick={onRestart} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
+                Practicar extra
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={onRestart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-extrabold text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]">
+                <RotateCcw className="h-5 w-5" /> Otra sesión
+              </button>
+              <button onClick={onGoHome} className="w-full rounded-2xl border border-border bg-card py-4 text-base font-bold text-foreground transition-colors hover:bg-muted/50">
+                Volver al inicio
+              </button>
+            </>
+          )}
         </div>
       </div>
     </motion.div>
@@ -313,7 +360,8 @@ const SessionSummary = ({
 };
 
 // ── Main Page ──
-const REVIEW_COUNT = 10;
+const FREE_REVIEW_COUNT = 10;
+const DAILY_CONTINUE_COUNT = 5;
 
 const SmartReviewPage = () => {
   const navigate = useNavigate();
