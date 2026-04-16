@@ -5,6 +5,7 @@ import { useTheme } from "@/components/ThemeProvider";
 import BottomNav from "@/components/BottomNav";
 import SuperUpgradeDialog from "@/components/SuperUpgradeDialog";
 import SmartReviewHubCard from "@/components/SmartReviewHubCard";
+import DailyStreakPopup from "@/components/DailyStreakPopup";
 const MOCK_STREAK = 7;
 
 const MODES = [
@@ -30,6 +31,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [showSuper, setShowSuper] = useState(false);
+  const [showStreak, setShowStreak] = useState(false);
 
   return (
     <div className="min-h-[100dvh] bg-background pb-20">
@@ -48,10 +50,14 @@ const HomePage = () => {
               <Crown className="h-3 w-3" />
               Super
             </button>
-            <div className="flex items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1">
+            <button
+              onClick={() => setShowStreak(true)}
+              className="flex items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1 transition-all hover:scale-105 hover:bg-accent/25 active:scale-95"
+              aria-label="Ver racha diaria"
+            >
               <Flame className="h-4 w-4 text-accent" />
               <span className="text-xs font-bold text-accent-foreground">{MOCK_STREAK}</span>
-            </div>
+            </button>
             <button
               onClick={toggleTheme}
               className="rounded-full p-2 hover:bg-muted transition-colors"
@@ -108,6 +114,7 @@ const HomePage = () => {
 
       <BottomNav />
       <SuperUpgradeDialog open={showSuper} onClose={() => setShowSuper(false)} />
+      <DailyStreakPopup streakDays={MOCK_STREAK} open={showStreak} onClose={() => setShowStreak(false)} />
     </div>
   );
 };
