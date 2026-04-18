@@ -20,6 +20,7 @@ import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import AdminBlogPage from "./pages/AdminBlogPage";
 import AdminBlogEditorPage from "./pages/AdminBlogEditorPage";
+import EducationPage from "./pages/EducationPage";
 import NotFound from "./pages/NotFound";
 import ChatbotWidget from "./components/ChatbotWidget";
 import { CookieConsentProvider } from "./components/cookies/CookieConsentContext";
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="/admin/blog" element={<AdminBlogPage />} />
               <Route path="/admin/blog/new" element={<AdminBlogEditorPage />} />
               <Route path="/admin/blog/edit/:id" element={<AdminBlogEditorPage />} />
+              <Route path="/education" element={<EducationPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <ChatbotWidget />

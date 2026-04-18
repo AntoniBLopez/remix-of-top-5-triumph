@@ -404,14 +404,29 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="border-t border-border px-4 py-6 md:px-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-center md:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-2">
             <img src={pulpoMascot} alt="VerboFlow" className="h-5 w-5 rounded object-cover" />
             <span className="text-sm font-bold text-foreground">VerboFlow</span>
             <span className="text-xs text-muted-foreground">by SpanischMitBelu</span>
           </div>
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
+            <button
+              onClick={() => navigate("/blog")}
+              className="font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Blog
+            </button>
+            <button
+              onClick={() => navigate("/education")}
+              className="inline-flex items-center gap-1.5 font-semibold text-muted-foreground transition-colors hover:text-primary"
+            >
+              <span aria-hidden>🎓</span>
+              Vokabla para escuelas
+            </button>
+          </nav>
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} VerboFlow · Contextual Cloze FSRS · Hecho con 💚
+            © {new Date().getFullYear()} VerboFlow · Contextual Cloze FSRS
           </p>
         </div>
       </footer>
